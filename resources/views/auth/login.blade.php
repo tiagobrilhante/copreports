@@ -10,7 +10,7 @@
 
                 <div class="card">
 
-                    <div class="card-header">{{ __('Login - SisPef') }}</div>
+                    <div class="card-header">{{ __('Login - CopReports') }}</div>
 
                     <div class="card-body">
 

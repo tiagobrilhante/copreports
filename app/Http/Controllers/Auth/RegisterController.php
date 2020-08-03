@@ -79,7 +79,6 @@ class RegisterController extends Controller
             'posto_grad' => $data['posto_grad'],
             'nome_guerra' => $data['nome_guerra'],
             'tel_contato' => $data['tel_contato'],
-            'tu_formacao' => $data['tu_formacao'],
             'status' => 'Ativo',
             'om_id' => $le_Token->om_id,
             'email' => $data['email'],

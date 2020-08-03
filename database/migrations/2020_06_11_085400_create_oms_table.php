@@ -19,11 +19,9 @@ class CreateOmsTable extends Migration
             $table->string('sigla');
             $table->string('cor');
             $table->boolean('podeVerTudo');
-            $table->boolean('ePef');
+            $table->boolean('podeCriarRelatorio');
             $table->boolean('novoNo');
             $table->integer('parent');
-            $table->integer('eixo_x');
-            $table->integer('eixo_y');
 
 
             $table->unsignedBigInteger('om_id')->nullable();

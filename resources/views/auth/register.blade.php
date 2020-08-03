@@ -243,34 +243,6 @@
 
                                 </div>
 
-                                {{--tu formação--}}
-                                <div class="row d-none" id="tu_for_space">
-
-                                    <div class="col">
-
-                                        <div class="form-group">
-
-                                            <label for="name">{{ __('Turma de Formação') }}</label>
-
-
-                                            <input id="tu_formacao" type="text"
-                                                   class="form-control @error('tu_formacao') is-invalid @enderror"
-                                                   name="tu_formacao"
-                                                   value="{{ old('tu_formacao') }}" required autocomplete="tu_formacao">
-
-                                            @error('tu_formacao')
-                                            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                            @enderror
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col"></div>
-                                </div>
-
                                 {{--senha e repita a senha--}}
                                 <div class="row">
 

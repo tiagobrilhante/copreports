@@ -95,16 +95,10 @@
             const podeVerTudoInicial = $('#podeVerTudo_' + id).is(':checked');
 
             // verifica se é pef inicial
-            const ePefInicial = $('#ePef_' + id).is(':checked');
-
-            // pega o valor inicial do eixoX
-            var eixoXInicial = $('#positionX_' + id).val();
-
-            // pega o valor inicial do eixoy
-            var eixoYInicial = $('#positionY_' + id).val();
+            const podeCriarRelatorioInicial = $('#podeCriarRelatorio_' + id).is(':checked');
 
             // adicina a arrai de controle
-            dadoInicial.push(nomeInicial, siglaInicial, initialColor, podeVerTudoInicial, ePefInicial, eixoXInicial, eixoYInicial);
+            dadoInicial.push(nomeInicial, siglaInicial, initialColor, podeVerTudoInicial, podeCriarRelatorioInicial);
 
             //input para o nome da OM
             var inputElement = $('<div class="container-fluid">' +
@@ -189,10 +183,6 @@
                 finalColor = color.hexString;
             });
 
-            // faz aparecer os inputs de X e Y no mapa
-            $container.find('#mapPosition_' + id).removeClass('d-none');
-
-
             // sensação de disabled para os outros nós
             $container.find('.node').each(function () {
 
@@ -212,8 +202,8 @@
             // checkbox pode ver tudo permite edição
             $container.find('#podeVerTudo_' + id).attr('disabled', false);
 
-            // checkbox ePef permite edição
-            $container.find('#ePef_' + id).attr('disabled', false);
+            // checkbox podeCriarRelatorio permite edição
+            $container.find('#podeCriarRelatorio_' + id).attr('disabled', false);
 
             // Esconde o botão de editar de todos os nós
             $container.find('.org-edit-button').each(function () {
@@ -293,17 +283,15 @@
                 2 - cor
                 3 - podevertudo
                 4- é pef
-                5 - eixo X
-                6 - eixo Y
+
                  */
 
                 var valorNameIni = dadoInicial[0];
                 var valorSiglaIni = dadoInicial[1];
                 var valorCorIni = dadoInicial[2];
                 var valorPodeVerTudoIni = dadoInicial[3];
-                var valorEPefIni = dadoInicial[4];
-                var valorEixoXIni = dadoInicial[5];
-                var valorEixoYIni = dadoInicial[6];
+                var valorPodeCriarRelatorioIni = dadoInicial[4];
+
 
                 var h2Element = $('<span id="nameElement_' + nodeIdReference + '"><h2>' + valorNameIni + '</h2></span>');
                 var h6Element = $('<span id="siglaElement_' + nodeIdReference + '"><h6><br>' + valorSiglaIni + '</h6></span>');
@@ -338,14 +326,14 @@
                     $container.find('#podeVerTudo_' + nodeIdReference).prop('checked', false).attr('disabled', true);
                 }
 
-                // desabilita o ePef
-                // se o ePef é false tem que deixar sem o check
+                // desabilita o podeCriarRelatorio
+                // se opodeCriarRelatorio é false tem que deixar sem o check
 
-                if (valorEPefIni) {
+                if (valorPodeCriarRelatorioIni) {
 
-                    $container.find('#ePef_' + nodeIdReference).prop('checked', true).attr('disabled', true);
+                    $container.find('#podeCriarRelatorio_' + nodeIdReference).prop('checked', true).attr('disabled', true);
                 } else {
-                    $container.find('#ePef_' + nodeIdReference).prop('checked', false).attr('disabled', true);
+                    $container.find('#podeCriarRelatorio_' + nodeIdReference).prop('checked', false).attr('disabled', true);
                 }
 
                 // altera para compactar
@@ -354,12 +342,6 @@
                 // oculta o botão de salvar
                 $container.find('div[data-button-id=' + nodeIdReference + ']').addClass('d-none');
 
-                // oculta os inputs de X e Y no mapa e devolve os valore iniciais
-
-                $('#positionX_' + nodeIdReference).val(valorEixoXIni);
-                $('#positionY_' + nodeIdReference).val(valorEixoYIni);
-
-                $container.find('#mapPosition_' + nodeIdReference).addClass('d-none');
 
                 // mostra os botões de editar
                 $container.find('.org-edit-button').each(function () {
@@ -401,17 +383,12 @@
         // salva as alterações nos nós
         function commitChange(id, theColor) {
 
-
-            console.log('inicio');
-            console.log(nodes[id].data);
-            console.log('fim');
-
             const valorInputName = $('#nomeOm_' + nodes[id].data.id).val();
 
             const valorInputSigla = $('#siglaOm_' + nodes[id].data.id).val();
 
             let valorPodeVerTudo = '';
-            let valorEPef = '';
+            let valorPodeCriarRelatorio = '';
 
             if ($('#podeVerTudo_' + id).is(':checked')) {
                 valorPodeVerTudo = 1;
@@ -419,10 +396,10 @@
                 valorPodeVerTudo = 0;
             }
 
-            if ($('#ePef_' + id).is(':checked')) {
-                valorEPef = 1;
+            if ($('#podeCriarRelatorio_' + id).is(':checked')) {
+                valorPodeCriarRelatorio = 1;
             } else {
-                valorEPef = 0;
+                valorPodeCriarRelatorio = 0;
             }
 
             let subordinacao = '';
@@ -438,8 +415,7 @@
 
             }
 
-            const valorEixoX = $('#positionX_' + id).val();
-            const valorEixoY = $('#positionY_' + id).val();
+
 
             $.ajax({
                 type: 'POST',
@@ -451,11 +427,9 @@
                     sigla: valorInputSigla,
                     cor: theColor,
                     podeVerTudo: valorPodeVerTudo,
-                    ePef: valorEPef,
+                    podeCriarRelatorio: valorPodeCriarRelatorio,
                     novoNo: nodes[id].data.novoNo,
                     parent: subordinacao,
-                    eixo_x: valorEixoX,
-                    eixo_y: valorEixoY,
                     om_id: subordinacao,
 
                 },
@@ -504,9 +478,7 @@
                 sigla: '',
                 cor: '#000000',
                 podeVerTudo: '',
-                ePef: '',
-                eixo_x: '',
-                eixo_y: '',
+                podeCriarRelatorio: '',
                 parent: parentId,
                 novoNo: true
             });
@@ -707,8 +679,8 @@
                 siglaString = '',
                 corString = '',
                 podeVerTudoBoolean = '',
-                subordinacaoString = '',
-                mapPosition = '';
+                subordinacaoString = '';
+
 
             // name
             if (typeof data.name !== 'undefined') {
@@ -726,23 +698,23 @@
             }
 
             //pode ver tudo e PEF
-            if (typeof data.podeVerTudo !== 'undefined' || typeof data.ePef !== 'undefined') {
+            if (typeof data.podeVerTudo !== 'undefined' || typeof data.podeCriarRelatorio !== 'undefined') {
 
                 let inputAttributeVer = '';
-                let inputAttributePef = '';
+                let inputAttributpodeCriarRelatorio = '';
                 if (data.podeVerTudo == true) {
                     inputAttributeVer = 'checked';
                 }
-                if (data.ePef == true) {
-                    inputAttributePef = 'checked';
+                if (data.podeCriarRelatorio == true) {
+                    inputAttributpodeCriarRelatorio = 'checked';
                 }
                 podeVerTudoBoolean = ' <div class="form-group form-check-inline">' +
                     '<input disabled type="checkbox" class="form-check-input" id="podeVerTudo_' + data.id + '" ' + inputAttributeVer + '>' +
                     '<label class="form-check-label" for="podeVerTudo_' + data.id + '">Pode ver tudo.</label>' +
                     '</div>' +
                     '<div class="form-check form-check-inline">' +
-                    '<input disabled class="form-check-input" type="checkbox" id="ePef_' + data.id + '" ' + inputAttributePef + ' >' +
-                    '<label class="form-check-label" for="ePef_' + data.id + '">É PEF</label>' +
+                    '<input disabled class="form-check-input" type="checkbox" id="podeCriarRelatorio_' + data.id + '" ' + inputAttributpodeCriarRelatorio + ' >' +
+                    '<label class="form-check-label" for="podeCriarRelatorio_' + data.id + '">Pode Criar Relatório</label>' +
                     '</div>';
 
             }
@@ -757,27 +729,6 @@
                 descString = '<p>' + 'self.data.description' + '</p>';
             }
 
-            //map position
-            if (typeof data.eixo_x !== 'undefined' || typeof data.eixo_y !== 'undefined') {
-                mapPosition = '<div class="container-fluid d-none" id="mapPosition_' + self.data.id + '">' +
-                    '<div class="row">' +
-                    '<div class="col">' +
-                    '<div class="form-group">' +
-                    '<label for="positionX_' + self.data.id + '">Posição X</label><br>' +
-                    '<input id="positionX_' + self.data.id + '" placeholder="Digite a posição X no mapa" ' +
-                    'class="form-control form-control-sm" type="number" value="' + self.data.eixo_x + '">' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="col">' +
-                    '<div class="form-group">' +
-                    '<label for="positionY_' + self.data.id + '">Posição Y</label><br>' +
-                    '<input autofocus id="positionY_' + self.data.id + '" placeholder="Digite a posição Y no mapa" ' +
-                    'class="form-control form-control-sm" type="number" value="' + self.data.eixo_y + '">' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-            }
 
             // botão salvar e cancelar
             var saveEditButton = '<div class="mt-2 d-none" data-button-id="' + self.data.id + '">' +
@@ -808,7 +759,7 @@
             }
 
             // monta a view
-            return "<div class='node' node-id='" + this.data.id + "'>" + nameString + siglaString + descString + podeVerTudoBoolean + subordinacaoString + corString + mapPosition + saveEditButton + buttonsHtml + "</div>";
+            return "<div class='node' node-id='" + this.data.id + "'>" + nameString + siglaString + descString + podeVerTudoBoolean + subordinacaoString + corString + saveEditButton + buttonsHtml + "</div>";
 
         }
 

@@ -39,6 +39,20 @@ class UserTipoSeeder extends Seeder
                 'user_id' => 4,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'id' => 5,
+                'tipo' => 'Relator',
+                'user_id' => 5,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'id' => 6,
+                'tipo' => 'Homologador',
+                'user_id' => 6,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
             ]
         ]);
 

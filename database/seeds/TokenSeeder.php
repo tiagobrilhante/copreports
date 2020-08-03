@@ -102,13 +102,49 @@ class TokenSeeder extends Seeder
                 'token' => '30CC6E95-9DF5-3B51-91C9-A264A8955CBC',
                 'type' => 'Visualizador',
                 'reference' => 'Maj Aristides',
-                'status' => 'Exprirado',
+                'status' => 'Expirado',
                 'om_id' => 4,
                 'quem_gerou' => 1,
                 'user_id' => 4,
                 'created_at' => '2020-05-23 11:11:11',
                 'updated_at' => '2020-05-23 11:11:11'
-            ]
+            ],
+            [
+                'id' => 10,
+                'token' => '41DD7F06-0EG6-4C62-02D0-B375B9066DCD',
+                'type' => 'Relator',
+                'reference' => 'Maj Mendes',
+                'status' => 'Utilizado',
+                'om_id' => 7,
+                'quem_gerou' => 1,
+                'user_id' => 5,
+                'created_at' => '2020-05-23 11:11:11',
+                'updated_at' => '2020-05-23 11:11:11'
+            ],
+            [
+                'id' => 11,
+                'token' => '52EE8G17-1FH7-5D73-13E1-C486C0177EDE',
+                'type' => 'Homologador',
+                'reference' => 'Cel Jutibo',
+                'status' => 'Utilizado',
+                'om_id' => 7,
+                'quem_gerou' => 1,
+                'user_id' => 6,
+                'created_at' => '2020-05-23 11:11:11',
+                'updated_at' => '2020-05-23 11:11:11'
+            ],
+            [
+                'id' => 12,
+                'token' => '23RT6E95-HG56-HGF5-91C9-A264A8976TRD',
+                'type' => 'Administrador',
+                'reference' => 'Cap Cabriollano',
+                'status' => 'Aguardando Uso',
+                'om_id' => 4,
+                'quem_gerou' => 1,
+                'user_id' => 4,
+                'created_at' => '2020-05-23 11:11:11',
+                'updated_at' => '2020-05-23 11:11:11'
+            ],
 
         ]);
 

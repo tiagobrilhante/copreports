@@ -23,8 +23,6 @@ class UserController extends Controller
     public function alluser($tipo)
     {
 
-
-
         if ($tipo == 'todos'){
 
             return ['data' => User::all()->load('userTipo', 'Om')];
@@ -34,11 +32,20 @@ class UserController extends Controller
             if ($tipo == 'admin'){
                 $retorno = 'Administrador';
             }
+
+            if ($tipo == 'master'){
+                $retorno = 'Master';
+            }
             if ($tipo == 'visu'){
                 $retorno = 'Visualizador';
             }
-            if ($tipo == 'pef'){
-                $retorno = 'Cmt / Scmt PEF';
+
+            if ($tipo == 'homol'){
+                $retorno = 'Homologador';
+            }
+
+            if ($tipo == 'rel'){
+                $retorno = 'Relator';
             }
 
             $users = User::whereHas('userTipo', function (Builder $query)use($retorno) {

@@ -36,6 +36,13 @@
                        aria-selected="true">Todos Usuários</a>
                 </li>
 
+                {{--Master--}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link mytabsselect" id="pills-master-tab" data-toggle="pill" href="#pills-todos"
+                       role="tab"
+                       aria-selected="false">Master</a>
+                </li>
+
                 {{--administradores--}}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link mytabsselect" id="pills-admin-tab" data-toggle="pill" href="#pills-todos"
@@ -50,11 +57,18 @@
                        aria-selected="false">Visualizadores</a>
                 </li>
 
-                {{--Cmt / Scmt PEF--}}
+                {{--Homologadores--}}
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link mytabsselect" id="pills-pef-tab" data-toggle="pill" href="#pills-todos"
+                    <a class="nav-link mytabsselect" id="pills-homol-tab" data-toggle="pill" href="#pills-todos"
                        role="tab"
-                       aria-selected="false">Cmt / Scmt PEF</a>
+                       aria-selected="false">Homologadores</a>
+                </li>
+
+                {{--Relatores--}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link mytabsselect" id="pills-rel-tab" data-toggle="pill" href="#pills-todos"
+                       role="tab"
+                       aria-selected="false">Relatores</a>
                 </li>
 
                 {{--seriais emitidos--}}
@@ -472,7 +486,7 @@
 
                                         <div class="alert alert-warning text-justify">
 
-                                            <p>O sispef possui diversos tipos de acesso, que são diretamente
+                                            <p>O CopReports possui diversos tipos de acesso, que são diretamente
                                                 influenciados
                                                 pela
                                                 Om escolhida:</p>
@@ -482,7 +496,7 @@
                                                     própria Om,
                                                     e seus subordinados, além de gerenciar as atividades inerentes a sua
                                                     OM,
-                                                    como homologar relatórios.
+                                                    como homologar relatórios em nível administrativo.
                                                 </li>
 
                                                 <li><b>Visualizador: </b> Tem acesso apenas as informações estatísticas
@@ -491,10 +505,10 @@
                                                     das estruturas subordinadas).
                                                 </li>
 
-                                                <li><b>Cmt / Scmt PEF: </b> Tipo de acesso exclusivo de PEFs. Permite o
-                                                    uso
-                                                    de
-                                                    funcionalidades ligadas a Pelotões de Fronteira
+                                                <li><b>Homologador: </b> Pode Homologar os relatórios criados pelas Om subordinadas.
+                                                </li>
+
+                                                <li><b>Relator: </b> Pode criar relatórios.
                                                 </li>
                                             </ul>
 

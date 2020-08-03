@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('nome_guerra');
             $table->string('posto_grad');
             $table->string('tel_contato');
-            $table->string('tu_formacao')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

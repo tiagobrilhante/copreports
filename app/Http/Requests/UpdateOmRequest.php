@@ -21,14 +21,6 @@ class UpdateOmRequest extends FormRequest
             'sigla' => [
                 'required',
             ],
-            'eixo_x' => [
-                'required',
-                'numeric',
-            ],
-            'eixo_y' => [
-                'required',
-                'numeric',
-            ],
             'om_id' => [
                 'required'
             ]

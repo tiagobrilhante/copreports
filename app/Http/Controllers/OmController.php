@@ -59,11 +59,9 @@ class OmController extends Controller
             $sigla = $request['sigla'];
             $cor = $request['cor'];
             $podeVerTudo = $request['podeVerTudo'];
-            $ePef = $request['ePef'];
+            $podeCriarRelatorio = $request['podeCriarRelatorio'];
             $novoNo = false;
             $parent = $request['parent'];
-            $eixo_x = $request['eixo_x'];
-            $eixo_y = $request['eixo_y'];
             $om_id = $request['om_id'];
 
             $om = Om::create([
@@ -71,11 +69,9 @@ class OmController extends Controller
                 'sigla' => $sigla,
                 'cor' => $cor,
                 'podeVerTudo' => $podeVerTudo,
-                'ePef' => $ePef,
+                'podeCriarRelatorio' => $podeCriarRelatorio,
                 'novoNo' => $novoNo,
                 'parent' => $parent,
-                'eixo_x' => $eixo_x,
-                'eixo_y' => $eixo_y,
                 'om_id' => $om_id,
             ]);
 
@@ -89,11 +85,9 @@ class OmController extends Controller
             $sigla = $request['sigla'];
             $cor = $request['cor'];
             $podeVerTudo = $request['podeVerTudo'];
-            $ePef = $request['ePef'];
+            $podeCriarRelatorio = $request['podeCriarRelatorio'];
             $novoNo = false;
             $parent = $request['parent'];
-            $eixo_x = $request['eixo_x'];
-            $eixo_y = $request['eixo_y'];
             if ($request['om_id'] == null){
 
                 $om_id = null;
@@ -107,11 +101,9 @@ class OmController extends Controller
             $om->sigla = $sigla;
             $om->cor = $cor;
             $om->podeVerTudo = $podeVerTudo;
-            $om->ePef = $ePef;
+            $om->podeCriarRelatorio = $podeCriarRelatorio;
             $om->parent = $parent;
             $om->om_id = $om_id;
-            $om->eixo_x = $eixo_x;
-            $om->eixo_y = $eixo_y;
             $om->save();
 
         }
@@ -138,16 +130,13 @@ class OmController extends Controller
         // tem que verificar se é pef ou não
         $om = Om::find($id);
 
+        if ($om->podeCriarRelatorio){
 
-
-        if ($om->ePef){
-
-            $tipos = ['Cmt / Scmt PEF', 'Visualizador'];
-
+            $tipos = ['Relator', 'Visualizador','Homologador'];
 
         } else {
 
-            $tipos = ['Administrador', 'Visualizador'];
+            $tipos = ['Master','Administrador','Homologador', 'Visualizador'];
 
         }
 

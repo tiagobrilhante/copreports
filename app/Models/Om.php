@@ -23,11 +23,9 @@ class Om extends Model
         'sigla',
         'cor',
         'podeVerTudo',
-        'ePef',
+        'podeCriarRelatorio',
         'novoNo',
         'parent',
-        'eixo_x',
-        'eixo_y',
         'om_id',
 
     ];

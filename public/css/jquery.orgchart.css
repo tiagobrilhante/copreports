@@ -79,11 +79,11 @@ div.orgChart div.node {
 }
 
 .expandForInput {
-    height: 540px !important;
+    height: 470px !important;
 }
 
 .expandForInputMaster {
-    height: 450px !important;
+    height: 380px !important;
 }
 
 .org-add-button,

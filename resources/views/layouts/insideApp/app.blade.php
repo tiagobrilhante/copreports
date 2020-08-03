@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'SisPef') }}</title>
+    <title>{{ config('app.name', 'CopReports') }}</title>
 
     @include('layouts.insideApp.requiredStyles')
 
