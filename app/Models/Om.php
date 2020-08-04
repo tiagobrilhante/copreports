@@ -24,6 +24,8 @@ class Om extends Model
         'cor',
         'podeVerTudo',
         'podeCriarRelatorio',
+        'podeHomologarRelatorio',
+        'podeCriarMaster',
         'novoNo',
         'parent',
         'om_id',

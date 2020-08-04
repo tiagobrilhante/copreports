@@ -68,7 +68,7 @@ div.orgChart div.node {
     display: inline-block;
     padding: 5px;
     width: 300px;
-    height: 170px;
+    height: 200px;
     background-color: #FFFFFF;
     line-height: 1.3em;
     border-radius: 4px;
@@ -79,11 +79,11 @@ div.orgChart div.node {
 }
 
 .expandForInput {
-    height: 470px !important;
+    height: 510px !important;
 }
 
 .expandForInputMaster {
-    height: 380px !important;
+    height: 415px !important;
 }
 
 .org-add-button,
@@ -141,4 +141,8 @@ div.orgChart div.node {
 
 .disableColor {
     background-color: #494545 !important;
+}
+
+#leSubord{
+    padding-top: 20px;
 }

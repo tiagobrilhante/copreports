@@ -60,6 +60,8 @@ class OmController extends Controller
             $cor = $request['cor'];
             $podeVerTudo = $request['podeVerTudo'];
             $podeCriarRelatorio = $request['podeCriarRelatorio'];
+            $podeHomologarRelatorio = $request['podeHomologarRelatorio'];
+            $podeCriarMaster = $request['podeCriarMaster'];
             $novoNo = false;
             $parent = $request['parent'];
             $om_id = $request['om_id'];
@@ -70,6 +72,8 @@ class OmController extends Controller
                 'cor' => $cor,
                 'podeVerTudo' => $podeVerTudo,
                 'podeCriarRelatorio' => $podeCriarRelatorio,
+                'podeHomologarRelatorio' => $podeHomologarRelatorio,
+                'podeCriarMaster' => $podeCriarMaster,
                 'novoNo' => $novoNo,
                 'parent' => $parent,
                 'om_id' => $om_id,
@@ -86,6 +90,8 @@ class OmController extends Controller
             $cor = $request['cor'];
             $podeVerTudo = $request['podeVerTudo'];
             $podeCriarRelatorio = $request['podeCriarRelatorio'];
+            $podeHomologarRelatorio = $request['podeHomologarRelatorio'];
+            $podeCriarMaster = $request['podeCriarMaster'];
             $novoNo = false;
             $parent = $request['parent'];
             if ($request['om_id'] == null){
@@ -102,6 +108,8 @@ class OmController extends Controller
             $om->cor = $cor;
             $om->podeVerTudo = $podeVerTudo;
             $om->podeCriarRelatorio = $podeCriarRelatorio;
+            $om->podeHomologarRelatorio = $podeHomologarRelatorio;
+            $om->podeCriarMaster = $podeCriarMaster;
             $om->parent = $parent;
             $om->om_id = $om_id;
             $om->save();
@@ -130,17 +138,29 @@ class OmController extends Controller
         // tem que verificar se é pef ou não
         $om = Om::find($id);
 
+        $array_de_tipos = ['Administrador','Visualizador'];
+
         if ($om->podeCriarRelatorio){
 
-            $tipos = ['Relator', 'Visualizador','Homologador'];
-
-        } else {
-
-            $tipos = ['Master','Administrador','Homologador', 'Visualizador'];
+            array_push($array_de_tipos, 'Relator');
 
         }
 
-        return $tipos;
+        if ($om->podeHomologarRelatorio){
+
+            array_push($array_de_tipos, 'Homologador');
+
+        }
+
+        if ($om->podeCriarMaster){
+
+            array_push($array_de_tipos, 'Master');
+
+        }
+
+
+
+        return $array_de_tipos;
 
     }
 

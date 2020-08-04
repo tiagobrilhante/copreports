@@ -20,6 +20,8 @@ class CreateOmsTable extends Migration
             $table->string('cor');
             $table->boolean('podeVerTudo');
             $table->boolean('podeCriarRelatorio');
+            $table->boolean('podeHomologarRelatorio');
+            $table->boolean('podeCriarMaster');
             $table->boolean('novoNo');
             $table->integer('parent');
 

@@ -94,11 +94,17 @@
             // verifica o pode ver tudo inicial
             const podeVerTudoInicial = $('#podeVerTudo_' + id).is(':checked');
 
-            // verifica se é pef inicial
+            // verifica se pode criar relatório inicial
             const podeCriarRelatorioInicial = $('#podeCriarRelatorio_' + id).is(':checked');
 
-            // adicina a arrai de controle
-            dadoInicial.push(nomeInicial, siglaInicial, initialColor, podeVerTudoInicial, podeCriarRelatorioInicial);
+            // verifica se pode homologar relatório inicial
+            const podeHomologarRelatorioInicial = $('#podeHomologarRelatorio_' + id).is(':checked');
+
+            // verifica se pode criar relatório inicial
+            const podeCriarMasterInicial = $('#podeCriarMaster_' + id).is(':checked');
+
+            // adicina a array de controle
+            dadoInicial.push(nomeInicial, siglaInicial, initialColor, podeVerTudoInicial, podeCriarRelatorioInicial, podeHomologarRelatorioInicial , podeCriarMasterInicial);
 
             //input para o nome da OM
             var inputElement = $('<div class="container-fluid">' +
@@ -205,6 +211,12 @@
             // checkbox podeCriarRelatorio permite edição
             $container.find('#podeCriarRelatorio_' + id).attr('disabled', false);
 
+            // checkbox podeHomologarRelatorio permite edição
+            $container.find('#podeHomologarRelatorio_' + id).attr('disabled', false);
+
+            // checkbox podeCriarMaster permite edição
+            $container.find('#podeCriarMaster_' + id).attr('disabled', false);
+
             // Esconde o botão de editar de todos os nós
             $container.find('.org-edit-button').each(function () {
 
@@ -291,6 +303,8 @@
                 var valorCorIni = dadoInicial[2];
                 var valorPodeVerTudoIni = dadoInicial[3];
                 var valorPodeCriarRelatorioIni = dadoInicial[4];
+                var valorPodeHomologarRelatorioIni = dadoInicial[5];
+                var valorPodeCriarMasterIni = dadoInicial[6];
 
 
                 var h2Element = $('<span id="nameElement_' + nodeIdReference + '"><h2>' + valorNameIni + '</h2></span>');
@@ -334,6 +348,26 @@
                     $container.find('#podeCriarRelatorio_' + nodeIdReference).prop('checked', true).attr('disabled', true);
                 } else {
                     $container.find('#podeCriarRelatorio_' + nodeIdReference).prop('checked', false).attr('disabled', true);
+                }
+
+                // desabilita o podeHomologarRelatorio
+                // se podeHomologarRelatorio é false tem que deixar sem o check
+
+                if (valorPodeHomologarRelatorioIni) {
+
+                    $container.find('#podeHomologarRelatorio_' + nodeIdReference).prop('checked', true).attr('disabled', true);
+                } else {
+                    $container.find('#podeHomologarRelatorio_' + nodeIdReference).prop('checked', false).attr('disabled', true);
+                }
+
+                // desabilita o podeCriarMaster
+                // se opodeCriarMaster é false tem que deixar sem o check
+
+                if (valorPodeCriarMasterIni) {
+
+                    $container.find('#podeCriarMaster_' + nodeIdReference).prop('checked', true).attr('disabled', true);
+                } else {
+                    $container.find('#podeCriarMaster_' + nodeIdReference).prop('checked', false).attr('disabled', true);
                 }
 
                 // altera para compactar
@@ -389,6 +423,8 @@
 
             let valorPodeVerTudo = '';
             let valorPodeCriarRelatorio = '';
+            let valorPodeHomologarRelatorio = '';
+            let valorPodeCriarMaster = '';
 
             if ($('#podeVerTudo_' + id).is(':checked')) {
                 valorPodeVerTudo = 1;
@@ -400,6 +436,18 @@
                 valorPodeCriarRelatorio = 1;
             } else {
                 valorPodeCriarRelatorio = 0;
+            }
+
+            if ($('#podeHomologarRelatorio_' + id).is(':checked')) {
+                valorPodeHomologarRelatorio = 1;
+            } else {
+                valorPodeHomologarRelatorio = 0;
+            }
+
+            if ($('#podeCriarMaster_' + id).is(':checked')) {
+                valorPodeCriarMaster = 1;
+            } else {
+                valorPodeCriarMaster = 0;
             }
 
             let subordinacao = '';
@@ -428,6 +476,8 @@
                     cor: theColor,
                     podeVerTudo: valorPodeVerTudo,
                     podeCriarRelatorio: valorPodeCriarRelatorio,
+                    podeHomologarRelatorio: valorPodeHomologarRelatorio,
+                    podeCriarMaster: valorPodeCriarMaster,
                     novoNo: nodes[id].data.novoNo,
                     parent: subordinacao,
                     om_id: subordinacao,
@@ -479,6 +529,8 @@
                 cor: '#000000',
                 podeVerTudo: '',
                 podeCriarRelatorio: '',
+                podeHomologarRelatorio: '',
+                podeCriarMaster: '',
                 parent: parentId,
                 novoNo: true
             });
@@ -697,25 +749,42 @@
                 corString = '<br>Cor: <span id="colorSpace_' + self.data.id + '" class="corbox" style="background-color: ' + self.data.cor + '"></span>';
             }
 
-            //pode ver tudo e PEF
-            if (typeof data.podeVerTudo !== 'undefined' || typeof data.podeCriarRelatorio !== 'undefined') {
+            //pode ver tudo e demais options
+            if (typeof data.podeVerTudo !== 'undefined' || typeof data.podeCriarRelatorio !== 'undefined' || typeof data.podeHomologarRelatorio !== 'undefined' || typeof data.podeCriarMaster !== 'undefined') {
 
                 let inputAttributeVer = '';
                 let inputAttributpodeCriarRelatorio = '';
+                let inputAttributpodeHomologarRelatorio = '';
+                let inputAttributpodeCriarMaster = '';
                 if (data.podeVerTudo == true) {
                     inputAttributeVer = 'checked';
                 }
                 if (data.podeCriarRelatorio == true) {
                     inputAttributpodeCriarRelatorio = 'checked';
                 }
+                if (data.podeHomologarRelatorio == true) {
+                    inputAttributpodeHomologarRelatorio = 'checked';
+                }
+                if (data.podeCriarMaster == true) {
+                    inputAttributpodeCriarMaster = 'checked';
+                }
                 podeVerTudoBoolean = ' <div class="form-group form-check-inline">' +
                     '<input disabled type="checkbox" class="form-check-input" id="podeVerTudo_' + data.id + '" ' + inputAttributeVer + '>' +
                     '<label class="form-check-label" for="podeVerTudo_' + data.id + '">Pode ver tudo.</label>' +
                     '</div>' +
                     '<div class="form-check form-check-inline">' +
+                    '<input disabled class="form-check-input" type="checkbox" id="podeCriarMaster_' + data.id + '" ' + inputAttributpodeCriarMaster + ' >' +
+                    '<label class="form-check-label" for="podeCriarMaster_' + data.id + '">Pode Criar Master</label>' +
+                    '</div><br>'+
+                    '<div class="form-check form-check-inline">' +
                     '<input disabled class="form-check-input" type="checkbox" id="podeCriarRelatorio_' + data.id + '" ' + inputAttributpodeCriarRelatorio + ' >' +
                     '<label class="form-check-label" for="podeCriarRelatorio_' + data.id + '">Pode Criar Relatório</label>' +
-                    '</div>';
+                    '</div>'+
+                    '<div class="form-check form-check-inline">' +
+                    '<input disabled class="form-check-input" type="checkbox" id="podeHomologarRelatorio_' + data.id + '" ' + inputAttributpodeHomologarRelatorio + ' >' +
+                    '<label class="form-check-label" for="podeHomologarRelatorio_' + data.id + '">Homologa Rel</label>' +
+                    '</div><br>';
+
 
             }
 

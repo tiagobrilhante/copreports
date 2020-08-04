@@ -2,11 +2,14 @@
 
 @section('content')
 
-
-
+    {{--card--}}
     <div class="card">
+
+        {{--card header--}}
         <div class="card-header">
+
             <div class="row">
+
                 <div class="col">
 
                     {{ __('Gerenciamento de Usuários') }}
@@ -15,6 +18,7 @@
 
                 <div class="col text-right">
 
+                    {{--add new user button--}}
                     <button class="btn btn-sm btn-outline-primary" id="new_user"><i class="fa fa-user-plus pr-2"></i>
                         Adicionar novo usuário
                     </button>
@@ -22,8 +26,10 @@
                 </div>
 
             </div>
+
         </div>
 
+        {{--card body--}}
         <div class="card-body">
 
             {{--tab space--}}
@@ -383,12 +389,12 @@
                                                 "serial" de acesso (Séries de numeros e outros caracteres), que deve ser
                                                 repassado para
                                                 o
-                                                novo usuário do SisPef.</p>
+                                                novo usuário do CopReports.</p>
                                             <p>De posse desse serial, o usuário conseguirá finalizar de forma autônoma o
                                                 seu
                                                 cadastro (É obrigatório o uso do serial para finalizar o processo, e a
                                                 única
-                                                forma de se cadastrar usuários no SisPef).</p>
+                                                forma de se cadastrar usuários no CopReports).</p>
 
                                         </div>
 
@@ -449,6 +455,10 @@
                                             <p>Escolha a Om do novo usuário. A Om tem papel fundamental na definição dos
                                                 tipos
                                                 de usuários permitidos.</p>
+                                            <p>É possível através da Om, criar alguns tipos específicos de
+                                                administradores!</p>
+                                            <p>Os atributos da Om, podem ser consultados no menu Adm-> Gerenciamento de
+                                                OM</p>
 
                                         </div>
 
@@ -469,13 +479,14 @@
                                         <div class="alert alert-warning text-justify">
 
                                             <p>Para fins de gerenciamento de chaves de acesso, no campo acima insira
-                                                qualquer
-                                                informação que ajude a rastrear a pessoa que deverá usar a chave de
-                                                acesso,
-                                                por
-                                                exemplo: <i>Cel Marcelo</i>, ou ainda por exemplo: <i>E4 CMA</i>.</p>
+                                                qualquer informação que ajude a rastrear a pessoa que deverá usar a
+                                                chave de
+                                                acesso, por exemplo: <i>Cel Marcelo</i>, ou ainda por exemplo: <i>E4
+                                                    CMA</i>.</p>
                                             <p>Essa informação facilitará futuras análises por parte dos
                                                 administradores. </p>
+                                            <p>Não necessáriamente uma referencia indique o usuário final da chave.</p>
+                                            <p>Cada chave gerada, guarda também o nome do seu criador.</p>
 
                                         </div>
 
@@ -491,31 +502,45 @@
                                                 pela
                                                 Om escolhida:</p>
                                             <ul>
-                                                <li><b>Administrador: </b> Pode cadastrar novos usuários, mas apenas
-                                                    para a
-                                                    própria Om,
-                                                    e seus subordinados, além de gerenciar as atividades inerentes a sua
-                                                    OM,
-                                                    como homologar relatórios em nível administrativo.
+
+                                                <li><b>Master: </b> São administradores de parâmetros de relatórios. Nem todas as
+                                                    organizações militares podem cadastrar um Administrador Master
+                                                    (apenas as que possuem tal permissão de cadastro).<br>
+                                                    Administradores Master podem criar modelos de relatórios ou editar os já
+                                                    existentes. <br>
+                                                    Admnistradores Master possuem acesso a apenas a relatórios homologados, e somente a nível de visualização.
+
+                                                </li>
+                                                <li><b>Administrador: </b> Os Administradores gerenciam as funções
+                                                    avançadas do sistema. Podem cadastrar novos usuários, mas apenas
+                                                    para a própria Om ou para Organizações subordinadas.<br>
+                                                    Por padrão, um administrador tem acesso apenas a relatórios homologados, e somente a nível de visualização.
                                                 </li>
 
-                                                <li><b>Visualizador: </b> Tem acesso apenas as informações estatísticas
+                                                <li><b>Visualizador: </b> Tem acesso as informações dos relatórios
                                                     (Dependendo da OM, poderá ver todas as informações, ou apenas as
-                                                    informações
-                                                    das estruturas subordinadas).
+                                                    informações das estruturas subordinadas).
                                                 </li>
 
-                                                <li><b>Homologador: </b> Pode Homologar os relatórios criados pelas Om subordinadas.
+                                                <li><b>Homologador: </b> Deve existe no mínimo um Homologador por Om que
+                                                    gera relatórios e por Om que tem ascendência hierarquica sobre uma
+                                                    Organização que gera Relatórios. O homologador não tem acesso a
+                                                    ferramentas
+                                                    administrativas, e sua função se limita a realizar a homologação de
+                                                    um relatório produzido por uma Om subordinada, ou pela sua própria
+                                                    Om (homologadores podem ver informações não homologadas por instâncias subordinadas).
                                                 </li>
 
-                                                <li><b>Relator: </b> Pode criar relatórios.
+                                                <li><b>Relator: </b> É o único usuário capaz de realizar lançamentos no
+                                                    CopReports, sendo o responsável pela produção na ponta da linha dos
+                                                    dados que vão gerar os relatórios.
                                                 </li>
+
                                             </ul>
 
                                         </div>
 
                                     </div>
-
 
                                 </div>
 
@@ -527,14 +552,20 @@
 
                     {{--modal footer--}}
                     <div class="modal-footer">
+
+                        {{--buttons--}}
+
+                        {{--submit--}}
                         <div id="botao_submit">
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
 
+                        {{--gerar novo--}}
                         <div id="botao_gerar_nova">
                             <button type="button" class="btn btn-success">Gerar Nova Chave</button>
                         </div>
 
+                        {{--cancelar--}}
                         <button type="button" class="btn btn-danger" id="cancel_new_user" data-dismiss="modal">
                             Cancelar
                         </button>
@@ -682,30 +713,6 @@
                                 </div>
 
                             </div>
-
-
-                            {{--tu de formação sfc--}}
-                            <div class="row">
-
-                                <div class="col">
-
-                                    <div class="form-group">
-
-                                        <label for="tu_form_user_edit">Turma de Formação</label>
-                                        <input type="text" class="form-control" id="tu_form_user_edit"
-                                               aria-describedby="tu_form_user_edit_help">
-
-                                        <small id="tu_form_user_edit_help" class="form-text text-muted">Altere a turma
-                                            de formação do usuário (SFC), obrigatório apenas para comandantes de PEF.
-                                            Demais situações favor deixar em branco.</small>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col"></div>
-                            </div>
-
 
                         </div>
 
@@ -1167,15 +1174,6 @@
                         $('.the_email').text(data.email);
                         $('.the_tel').text(data.tel_contato);
 
-                        if (data.tu_formacao != null) {
-                            $('#espaco_forma').removeClass('d-none');
-                            $('.the_formacao').text(data.tu_formacao);
-                        } else {
-
-                            $('#espaco_forma').addClass('d-none');
-
-                        }
-
                         $('.the_tipo').text(data.user_tipo.tipo);
                         $('.the_om').text(data.om.name);
                         $('.the_token').text(data.token.token + ' ( Gerado por: ' + data.token.gerador_tokens.posto_grad + ' ' + data.token.gerador_tokens.nome_guerra + ' - ' + data.token.gerador_tokens.om.sigla + ' ) ');
@@ -1404,7 +1402,7 @@
 
                 $.confirm({
                     title: 'Você esta certo disso?',
-                    content: 'A ação de excluir um usuário não deve ser usada a não ser que vc tenha plena certeza do que está fazendo! O ideal, é apenas desativar o mesmo, pois assim é possível manter o histórico dele ao longo de toda a utilização do SisPef. O pessoa será excluída do sistema!',
+                    content: 'A ação de excluir um usuário não deve ser usada a não ser que vc tenha plena certeza do que está fazendo! O ideal, é apenas desativar o mesmo, pois assim é possível manter o histórico dele ao longo de toda a utilização do CopReports. O pessoa será excluída do sistema!',
                     buttons: {
                         Confirmar: {
                             action: function () {
@@ -1461,7 +1459,7 @@
 
                 var id = $(this).attr('id').split('_')[1];
 
-                if ($(this).hasClass('btn-outline-dark')){
+                if ($(this).hasClass('btn-outline-dark')) {
 
                     // alerta de erro
                     toastr.error('Você não pode desativar um usuário resetado!', 'Erro!');
@@ -1470,7 +1468,7 @@
 
                     $.confirm({
                         title: 'Você esta certo disso?',
-                        content: 'A ação de desativar um usuário vai impedir o mesmo de ter acesso ao SisPef, no entanto manterá todos os dados relativos a histórico de ações e acessos!',
+                        content: 'A ação de desativar um usuário vai impedir o mesmo de ter acesso ao CopReports, no entanto manterá todos os dados relativos a histórico de ações e acessos!',
                         buttons: {
                             Confirmar: {
                                 action: function () {
@@ -1562,8 +1560,6 @@
 
                         $('#email_user_edit').val(data.email);
                         $('#tel_user_edit').val(data.tel_contato);
-
-                        $('#tu_form_user_edit').val(data.tu_formacao);
 
                         $('#posto_grad_user_edit').val(data.posto_grad)
 
@@ -1712,7 +1708,6 @@
                     success: function (data) {
 
 
-
                         var $userTable = $('#user_table').dataTable();
 
                         // The second parameter will be the row, and the third is the column.
@@ -1826,7 +1821,7 @@
 
                 $.confirm({
                     title: 'Você esta certo disso?',
-                    content: 'A ação de excluir um Token de acesso vai removê-lo definitivamente do sistema, nenhum usuário poderá usar esse token para efetuar o cadastro no SisPef!',
+                    content: 'A ação de excluir um Token de acesso vai removê-lo definitivamente do sistema, nenhum usuário poderá usar esse token para efetuar o cadastro no CopReports!',
                     buttons: {
                         Confirmar: {
                             action: function () {

@@ -22,6 +22,8 @@ class OMSeeder extends Seeder
                 'cor' => '#FFF000',
                 'podeVerTudo' => 1,
                 'podeCriarRelatorio' => 0,
+                'podeHomologarRelatorio' => 1,
+                'podeCriarMaster' => 1,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -35,6 +37,8 @@ class OMSeeder extends Seeder
                 'om_id' => 1,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 0,
+                'podeHomologarRelatorio' => 0,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -48,6 +52,8 @@ class OMSeeder extends Seeder
                 'om_id' => 1,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 0,
+                'podeHomologarRelatorio' => 0,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -61,6 +67,8 @@ class OMSeeder extends Seeder
                 'om_id' => 1,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 0,
+                'podeHomologarRelatorio' => 0,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -74,6 +82,8 @@ class OMSeeder extends Seeder
                 'om_id' => 1,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 0,
+                'podeHomologarRelatorio' => 0,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -87,6 +97,8 @@ class OMSeeder extends Seeder
                 'om_id' => 4,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 1,
+                'podeHomologarRelatorio' => 1,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -100,6 +112,8 @@ class OMSeeder extends Seeder
                 'om_id' => 4,
                 'podeVerTudo' => 0,
                 'podeCriarRelatorio' => 1,
+                'podeHomologarRelatorio' => 1,
+                'podeCriarMaster' => 0,
                 'novoNo' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
