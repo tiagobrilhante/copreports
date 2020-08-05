@@ -55,7 +55,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/alltoken/{tipo}', 'TokenAcessoController@returnSeriais');
     Route::get('/renovatoken/{id}', 'TokenAcessoController@renewToken');
 
+    // controles de tipos de relatórios
+    Route::resource('reportsmanager', 'RelatorioTipoController');
 
 
+    // controles de missão de emprego
+    Route::resource('memanager', 'MissaoEmpregoController');
 
 });

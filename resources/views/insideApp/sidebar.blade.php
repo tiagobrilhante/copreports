@@ -25,7 +25,7 @@
                 Adm
                 </a>
 
-                <ul class=" @if(Request::path() == 'ommanager' || Request::path() == 'admin/usermanager') show @else collapse @endif list-unstyled"
+                <ul class=" @if(Request::path() == 'ommanager' || Request::path() == 'reportsmanager' || Request::path() == 'admin/usermanager') show @else collapse @endif list-unstyled"
                     id="adminSubmenu">
                     <li>
                         <a href="{{ route("usermanager.index") }}"
@@ -37,6 +37,13 @@
                            class="link-menu__sidebar link-submenu__sidebar @if (Request::path() == 'ommanager') active__sublink @endif"><i
                                 class="fa fa-globe"></i> Gerenciamento de OM</a>
                     </li>
+
+                    <li>
+                        <a href="{{ route("reportsmanager.index") }}"
+                           class="link-menu__sidebar link-submenu__sidebar @if (Request::path() == 'reportsmanager') active__sublink @endif"><i
+                                class="fa fa-file"></i> Tipos de Relatórios</a>
+                    </li>
+
                     <li>
                         <a href="#" class="link-menu__sidebar link-submenu__sidebar">About 3</a>
                     </li>

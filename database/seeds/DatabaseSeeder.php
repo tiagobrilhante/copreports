@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
             OMSeeder::Class,
             UserSeeder::Class,
             UserTipoSeeder::Class,
-            TokenSeeder::Class
+            TokenSeeder::Class,
+            MissaoEmpregoSeeder::Class,
+            MissaoEmpregoSubItemSeeder::Class,
         ]);
     }
 }

@@ -60,8 +60,8 @@
                                                 </div>
                                                 <div class="col">
 
-                                                    <button type="button" class="btn btn-danger btn-block"> Cancelar
-                                                    </button>
+                                                    <a href="/" class="btn btn-danger btn-block link-simples-branco"> Cancelar
+                                                    </a>
 
                                                 </div>
                                             </div>
@@ -304,9 +304,8 @@
 
                                         <div class="form-group">
 
-                                            <button type="button" class="btn btn-danger btn-block">
-                                                {{ __('Cancelar') }}
-                                            </button>
+                                            <a href="/" class="btn btn-danger btn-block link-simples-branco"> Cancelar
+                                            </a>
                                         </div>
 
                                     </div>
