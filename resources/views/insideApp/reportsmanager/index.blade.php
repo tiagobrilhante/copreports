@@ -78,17 +78,21 @@
 
                                     <div class="col-10">
 
-                                        <span class="audiowide"> {{ $missaoEmprego->missao }} </span><br>
+                                        <span class="audiowide"> {{ $missaoEmprego->missao }} </span> <span
+                                            class="corbox-normal bordas"
+                                            style="background-color: {{ $missaoEmprego->cor }};"></span> <br>
 
                                     </div>
 
                                     <div class="col-2 text-right">
 
-                                        <a href="#" class="link-simples btn_editante" id="edit_{{$missaoEmprego->id}}"><i class="fa fa-edit"></i></a>
+                                        <a href="#" class="link-simples btn_editante"
+                                           id="edit_{{$missaoEmprego->id}}"><i class="fa fa-edit"></i></a>
 
                                         <span class="separaicon"></span>
 
-                                        <a href="#" class="link-simples btn_excludente" id="exclude_{{$missaoEmprego->id}}"><i class="fa fa-trash"></i></a>
+                                        <a href="#" class="link-simples btn_excludente"
+                                           id="exclude_{{$missaoEmprego->id}}"><i class="fa fa-trash"></i></a>
 
                                     </div>
 
@@ -99,7 +103,8 @@
 
                                     <ul>
                                         @foreach($missaoEmprego->subItens as $si)
-                                            <li>{{$si->sub_item}}
+                                            <li>{{$si->sub_item}} <span class="bola"
+                                                                        style="background-color: {{ $si->cor }};"></span>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -283,6 +288,123 @@
 
     </div>
 
+    {{--modal de alterar missão de emprego e subitens--}}
+    <div class="modal fade" id="altera_me" tabindex="-1" role="dialog"
+         aria-labelledby="altera_meLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-xl" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Alteração de Missão de Emprego - <span class="the_me"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="form_alterar_me">
+
+                    {{--modal body--}}
+                    <div class="modal-body">
+
+                        {{--espaço para missão--}}
+                        <div class=" alert alert-meu">
+
+                            {{---Missão e cor--}}
+                            <div class="row">
+
+                                {{--missão--}}
+                                <div class="col-9">
+
+                                    <div class="form-group">
+
+                                        <label for="me_edit">Missão</label>
+                                        <input type="text" class="form-control" id="me_edit"
+                                               aria-describedby="me_edit_help">
+
+                                        <input type="hidden" id="me_edit_id">
+
+
+                                        <small id="me_help" class="form-text text-muted">Altere a missão de emprego se
+                                            desejar.</small>
+
+                                    </div>
+
+                                </div>
+
+                                {{--cor--}}
+                                <div class="col-3">
+
+                                    <label for="cor_me_edit">Cor</label>
+                                    <input type="color" class="form-control" id="cor_me_edit"
+                                           aria-describedby="cor_me_edit_help">
+
+                                    <small id="cor_me_edit_help" class="form-text text-muted">Altere a cor da missão de
+                                        emprego se desejar.</small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {{--espaço para SI--}}
+                        <div class="alert alert-dark">
+
+                            <div class="row">
+                                <div class="col-9">
+                                    <span class="audiowide">Sub Itens</span>
+
+                                    <button type="button" class="ml-3 btn btn-outline-primary btn-xsm"
+                                            id="add_new_si_edit"><i class="fa fa-plus-circle"></i> Adicionar novos Sub
+                                        Itens
+                                    </button>
+
+                                </div>
+                                <div class="col-3 text-right">
+
+                                    <a href="#" class="link-simples btn_si_editante" id="editsi_"><i
+                                            class="fa fa-edit"></i></a>
+                                    <a href="#" class="link-simples btn_si_cancelante d-none" id="cancelsi_"><i
+                                            class="fa fa-ban"></i></a>
+
+                                </div>
+                            </div>
+
+
+                            <div class="alert alert-meu text-center pt-3" id="no_si_edit">
+                                Não existem subitens cadastrados
+                            </div>
+
+                            <div id="list_si_for_edit" class="pt-3">
+
+                            </div>
+
+                            <div id="space_for_edit_si_inputs"></div>
+
+                        </div>
+
+
+                    </div>
+
+                    {{--modal footer--}}
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Alterar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     {{--modal de exibir dados de uma pessoa--}}
     <div class="modal fade" id="exibe_pessoa" tabindex="-1" role="dialog"
          aria-labelledby="exibe_pessoaLabel"
@@ -400,224 +522,28 @@
 
 
 
-    {{--modal de alterar dados de uma pessoa--}}
-    <div class="modal fade" id="altera_pessoa" tabindex="-1" role="dialog"
-         aria-labelledby="altera_pessoaLabel"
-         aria-hidden="true">
 
-        <div class="modal-dialog modal-xl" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title">Alteração de dados - <span class="the_posto_grad"></span> <span
-                            class="the_nome_guerra"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <form id="form_alterar_user">
-
-                    {{--modal body--}}
-                    <div class="modal-body">
-
-                        <div class=" alert alert-meu">
-
-                            {{---nome e nome de guerra (posto)--}}
-                            <div class="row">
-
-                                {{--nome--}}
-                                <div class="col">
-
-                                    <div class="form-group">
-
-                                        <label for="nome_user_edit">Nome</label>
-                                        <input type="text" class="form-control" id="nome_user_edit"
-                                               aria-describedby="name_user_edit_help">
-
-                                        <input type="hidden" id="id_user_edit">
-
-                                        <small id="name_user_edit_help" class="form-text text-muted">Altere o nome do
-                                            usuário se desejar.</small>
-
-                                    </div>
-
-                                </div>
-
-                                {{--nome de guerra / posto--}}
-                                <div class="col">
-
-                                    <div class="row">
-
-                                        <div class="form-group col-5">
-
-                                            <label for="nome_guerra_user_edit">P/G</label>
-                                            <select class="form-control" id="posto_grad_user_edit"
-                                                    aria-describedby="posto_grad_user_edit_help">
-                                                <option>Gen Ex</option>
-                                                <option>Gen Div</option>
-                                                <option>Gen Bda</option>
-                                                <option>Cel</option>
-                                                <option>Ten Cel</option>
-                                                <option>Maj</option>
-                                                <option>Cap</option>
-                                                <option>1º Ten</option>
-                                                <option>2º Ten</option>
-                                                <option>Asp</option>
-                                                <option>S Ten</option>
-                                                <option>1º Sgt</option>
-                                                <option>2º Sgt</option>
-                                                <option>3º Sgt</option>
-                                                <option>Cb</option>
-                                                <option>Sd</option>
-                                                <option>SC</option>
-
-                                            </select>
-
-                                            <small id="posto_grad_user_edit_help" class="form-text text-muted">Altere o
-                                                Posto/ Grad do usuário se desejar.</small>
-
-                                        </div>
-
-                                        <div class="form-group col-7">
-
-                                            <label for="nome_guerra_user_edit">Nome de Guerra</label>
-                                            <input type="text" class="form-control" id="nome_guerra_user_edit"
-                                                   aria-describedby="nome_guerra_user_edit_help">
-
-                                            <small id="nome_guerra_user_edit_help" class="form-text text-muted">Altere o
-                                                nome de guerra do usuário se desejar.</small>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            {{---email e tel contato--}}
-                            <div class="row">
-
-                                {{--email--}}
-                                <div class="col">
-
-                                    <div class="form-group">
-
-                                        <label for="email_user_edit">Nome de Guerra</label>
-                                        <input type="text" class="form-control" id="email_user_edit"
-                                               aria-describedby="email_user_edit_help">
-
-                                        <small id="email_user_edit_help" class="form-text text-muted">Altere o email do
-                                            usuário se desejar.</small>
-
-                                    </div>
-
-                                </div>
-
-                                {{--tel contato--}}
-                                <div class="col">
-
-                                    <div class="form-group">
-
-                                        <label for="tel_user_edit">Telefone de Contato</label>
-                                        <input type="tel" class="form-control tel_ctt" id="tel_user_edit"
-                                               aria-describedby="tel_user_edit_help">
-
-                                        <small id="tel_user_edit_help" class="form-text text-muted">Altere o Telefone de
-                                            contato do usuário se desejar.</small>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="alert alert-dark">
-
-                            {{---tipo de usuario e om --}}
-                            <div class="row">
-
-                                {{--om--}}
-                                <div class="col">
-
-                                    <div class="form-group">
-
-                                        <label for="om_user_edit">Om</label>
-
-                                        <select class="form-control" id="om_user_edit"
-                                                aria-describedby="om_user_edit_help">
-
-                                        </select>
-
-                                        <small id="om_user_edit_help" class="form-text text-muted">Altere a Om do
-                                            usuário se desejar.</small>
-
-                                    </div>
-
-                                </div>
-
-                                {{--tipo de usuario--}}
-                                <div class="col">
-                                    <div id="selectContainer_edit">
-                                        <div class="form-group">
-
-                                            <label for="type_user_edit">Tipo de Usuário</label>
-
-                                            <select class="form-control" id="type_user_edit"
-                                                    aria-describedby="type_user_edit_help">
-
-                                            </select>
-
-                                            <small id="type_user_edit_help" class="form-text text-muted">Altere o tipo
-                                                de usuário se desejar.</small>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="alert alert-primary">
-                            <b>Token de Acesso: </b> <span class="the_token"></span>
-                        </div>
-
-
-                    </div>
-
-                    {{--modal footer--}}
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Alterar</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
 
 @endsection
 
 @section('myScripts')
 
-    {{-- load maskinput --}}
-    <script src="{{ asset('js/maskinput.js') }}" defer></script>
 
     <script>
         $(function () {
 
+
+            //Function to convert rgb color to hex format
+            var hexDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+
+            function rgb2hex(rgb) {
+                rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+            }
+
+            function hex(x) {
+                return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+            }
 
             // abre o modal de cadastro de novos usuários e monta o select de OM
             $(document).on('click', '#new_missaoEmprego', function (e) {
@@ -691,7 +617,6 @@
 
             });
 
-
             // botao que adiciona subitens
             var contador_lebutton = 0;
             $(document).on('click', '#le_st_button', function (e) {
@@ -728,6 +653,7 @@
                 let id = $(this).attr('id').split('_')[1];
 
                 $('#st_inputs_' + id).remove();
+                $('#st_edit_inputs_' + id).remove();
 
                 var le_inputs_number = $('.counter_input').length;
 
@@ -739,7 +665,6 @@
 
 
             });
-
 
             // remove missões de emprego
             $(document).on('click', '.btn_excludente', function (e) {
@@ -771,7 +696,6 @@
                                     success: function (data) {
 
 
-
                                         // alerta de sucesso
                                         toastr.success('A missão de emrpego foi removida com sucesso.', 'Sucesso!');
 
@@ -797,17 +721,341 @@
 
             });
 
+            // abre o modal de editar me
+            $(document).on('click', '.btn_editante', function (e) {
+
+                e.preventDefault();
+
+                var id = $(this).attr('id').split('_')[1];
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/memanager/' + id,
+
+                    success: function (data) {
+
+                        $('#space_for_edit_si_inputs').empty();
+                        $('#list_si_for_edit').empty();
+
+                        $('.the_me').text(data.missao);
+                        $('#me_edit').val(data.missao);
+                        $('#cor_me_edit').val(data.cor);
+                        $('#me_edit_id').val(data.id);
+
+                        $('.btn_si_editante').attr('id', 'editsi_' + data.id);
+                        $('.btn_si_cancelante').attr('id', 'cancelsi_' + data.id);
+
+
+                        if (data.sub_itens.length > 0) {
+
+                            $('#no_si_edit').addClass('d-none');
+
+                            let my_list_si = '<ul>';
+
+                            for (let i = 0; i < data.sub_itens.length; i++) {
+
+                                my_list_si += `<li class="lilieditlist_${data.id}" id="itemsieditli_${data.sub_itens[i].id}">${data.sub_itens[i].sub_item} <span class="bola" style="background-color: ${data.sub_itens[i].cor};"></li>`;
+
+                            }
+
+                            my_list_si += '</ul>';
+
+                            $('#list_si_for_edit').append(my_list_si);
+
+                        } else {
+
+                            $('#no_si_edit').removeClass('d-none')
+
+                        }
+
+                        $('.btn_si_editante').removeClass('d-none');
+                        $('.btn_si_cancelante').addClass('d-none');
+
+                        // show modal
+                        $('#altera_me').modal('show');
+                    },
+                    error: function () {
+
+                        // alert de erro
+                        toastr.error('Não foi possível obter as informações!', 'Falha!');
+
+                    }
+
+                });
+
+            });
+
+            var le_add_edit_si = 0;
+            // adiciona novos inputs de si na tela de edição
+            $(document).on('click', '#add_new_si_edit', function (e) {
+
+                e.preventDefault();
+
+                var teste = $('#base_st_inputs_space').clone();
+
+                teste.attr('id', 'st_edit_inputs_' + le_add_edit_si)
+                    .removeClass('d-none').addClass('counter_input')
+                    .find('label')
+                    .first()
+                    .attr('for', 'st_me_edit_' + le_add_edit_si)
+                    .next()
+                    .attr('id', 'st_me_edit_' + le_add_edit_si).attr('required', true).addClass('le_array_si_edit')
+                    .attr('name', 'st_me_edit[]').parent().next()
+                    .find('button').attr('id', 'btnstmeedit_' + le_add_edit_si);
+
+
+                $('#space_for_edit_si_inputs').append(teste);
+
+                $('#st_me_edit_' + le_add_edit_si).focus();
+
+                le_add_edit_si++;
+
+            });
+
+            // guarda as infortmações iniciais para caso cancele, volta ao normal
+            var leinfoinisi = '';
+
+            //ajusta os si para editar
+            $(document).on('click', '.btn_si_editante', function (e) {
+
+                e.preventDefault();
+
+                let id_me = $(this).attr('id').split('_')[1];
+
+                var modularinputs = '';
+
+                $('.lilieditlist_' + id_me).each(function () {
+
+                    let tttext = $(this).text();
+                    let ideditind = $(this).attr('id').split('_')[1];
+                    let coloreditind = rgb2hex($(this).children('span').first().css('background-color'));
+
+                    leinfoinisi += ` <!--ref --> <li class="lilieditlist_${id_me}" id="itemsieditli_${ideditind}">${tttext} <span class="bola" style="background-color: ${coloreditind};"></li>`;
+
+                    modularinputs += '<div class="row" id="inpputttsi_' + ideditind + '">' +
+                        '<div class="col-9">' +
+                        '<div class="form-group">' +
+                        '<input type="text" class="form-control le_olds_si_name" id="me_si_edit_input_' + ideditind + '" value="' + tttext + '">' +
+                        '<input type="hidden" class="le_olds_si_id" id="me_si_edit_id_input_' + ideditind + '" value="' + ideditind + '">' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<input type="color" class="form-control le_olds_si_color" id="cor_me_edit_input_' + ideditind + '" value="' + coloreditind + '">' +
+                        '</div>' +
+                        '<div class="col-1">' +
+                        '<button data-id="'+id_me+'" type="button" class="btn btn-danger remove_si_edit_window" id="removemesieditinput_' + ideditind + '"><i class="fa fa-trash"></i></button>' +
+                        '</div>' +
+                        '</div>';
+
+                });
+
+                $('#list_si_for_edit').empty();
+
+                $('#list_si_for_edit').append(modularinputs);
+
+                $('.btn_si_editante').addClass('d-none');
+                $('.btn_si_cancelante').removeClass('d-none');
+
+            });
+
+            // cancela a edição de itens já cadastrados
+            $(document).on('click', '.btn_si_cancelante', function (e) {
+
+                e.preventDefault();
+
+                $('#list_si_for_edit').empty();
+
+                $('#list_si_for_edit').append('<ul>' + leinfoinisi + '</ul>');
+
+                $('.btn_si_editante').removeClass('d-none');
+                $('.btn_si_cancelante').addClass('d-none');
+
+                leinfoinisi = '';
+
+
+            });
+
+            //submete alterações
+            $(document).on('submit', '#form_alterar_me', function (e) {
+
+                e.preventDefault();
+
+                let id = $('#me_edit_id').val();
+                let missao = $('#me_edit').val();
+                let cor = $('#cor_me_edit').val();
+
+                let array_novas_si = [''];
+                let array_antigas_si_nome_editadas = [''];
+                let array_antigas_si_cor_editadas = [''];
+                let array_antigas_si_id_editadas = [''];
+
+                if ($('.le_array_si_edit').length > 0) {
+
+                    array_novas_si = [];
+
+                    for (let i = 0; i < $('.le_array_si_edit').length; i++) {
+
+                        array_novas_si.push($('.le_array_si_edit').eq(i).val());
+
+                    }
+
+                }
+
+                if ($('.le_olds_si_name').length > 0) {
+
+                    array_antigas_si_nome_editadas = [];
+                    array_antigas_si_cor_editadas = [];
+                    array_antigas_si_id_editadas = [];
+
+                    for (let i = 0; i < $('.le_olds_si_name').length; i++) {
+
+                        array_antigas_si_nome_editadas.push($('.le_olds_si_name').eq(i).val());
+                        array_antigas_si_cor_editadas.push($('.le_olds_si_color').eq(i).val());
+                        array_antigas_si_id_editadas.push($('.le_olds_si_id').eq(i).val());
+
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/memanager/' + id,
+                    data: {
+                        _method: 'PUT',
+                        _token: $('meta[name=csrf-token]').attr('content'),
+                        missao: missao,
+                        cor: cor,
+                        novas_si: array_novas_si,
+                        si_editada: array_antigas_si_nome_editadas,
+                        si_cor_editada: array_antigas_si_cor_editadas,
+                        si_id_editada: array_antigas_si_id_editadas,
+
+                    },
+
+                    success: function (data) {
+
+
+                        console.log(data);
+
+
+                    },
+                    error: function (data) {
+
+                        console.log(data);
+
+                        toastr.error('Não foi possível alterar a missão de emprego!', 'Falha!');
+
+                    }
+
+
+                });
+
+            });
+
+            // remove um si já existente na janela de edição
+            $(document).on('click', '.remove_si_edit_window', function (e) {
+
+                e.preventDefault();
+                let id = $(this).attr('id').split('_')[1];
+                let id_me = $(this).data('id');
+
+                console.log(id_me);
+
+
+                $.confirm({
+                    title: 'Você esta certo disso?',
+                    content: 'A ação de excluir uma sub item de missão de emprego é altamente prejudicial ao sistema! Tenha certeza absoluta do que está fazendo, pois isso vai gerar um enorme impacto em todas as missões e relatórios existentes.',
+                    buttons: {
+                        Confirmar: {
+                            action: function () {
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/simemanager/' + id,
+
+                                    data: {
+                                        _method: 'DELETE',
+                                    },
+                                    success: function (data) {
+
+                                        console.log('leinfoini entrando');
+                                        console.log(leinfoinisi);
+                                        console.log('leinfoini entrando fim');
+
+                                        // remove o input
+                                        $('#inpputttsi_' + id).remove();
+
+
+                                        // arrumando o cancel
+                                            var ajuste = leinfoinisi.split('<!--ref -->');
+
+                                            console.log('entrada da array dividida por ref');
+                                            console.log(ajuste);
+                                            console.log('fim entrada array dividida por ref');
+
+                                            for (let i = 0; i < ajuste.length ; i++) {
+
+                                                if (ajuste[i].match('itemsieditli_'+id)){
+
+                                                    ajuste.splice(i);
+
+                                                }
+
+                                            }
+
+                                            console.log('depois de remover');
+                                            console.log(ajuste);
+                                            console.log('fim depois de remover');
+
+                                            leinfoinisi = '';
+
+                                            for (let i = 0; i < ajuste.length ; i++) {
+
+                                                 leinfoinisi += `${ajuste[i]}`;
+
+
+                                            }
+
+                                            console.log('leinfoinisi');
+                                            console.log(leinfoinisi);
 
 
 
 
-            // masks
 
-            // mask cpf
-            $("#cpf").mask("999.999.999-99");
+                                        // alerta de sucesso
+                                        toastr.success('O sub item da missão de emrpego foi removido com sucesso.', 'Sucesso!');
 
-            // mask tel
-            $(".tel_ctt").mask("(99) 99999-9999");
+                                    },
+                                    error: function () {
+
+                                        // alert de erro
+                                        toastr.error('Não foi possível excluir o sub item da missão de emprego!', 'Falha!');
+
+                                    }
+
+                                });
+                            },
+                            btnClass: 'btn-outline-dark'
+                        },
+                        Cancelar: {
+                            btnClass: 'btn-outline-danger'
+                        },
+                    },
+                    columnClass: 'col-md-6'
+                });
+
+
+            });
+
+
+            //--------------------------------------//
+
 
             // inicializa o datatables
             $('#user_table').DataTable({
@@ -1158,342 +1406,6 @@
 
             });
 
-            // retorna informações sobre a pessoa
-            $(document).on('click', '.btn_show', function (e) {
-
-                e.preventDefault();
-
-                var id = $(this).attr('id').split('_')[1];
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/admin/usermanager/' + id,
-
-                    success: function (data) {
-
-                        $('.the_posto_grad').text(data.posto_grad);
-                        $('.the_nome_guerra').text(data.nome_guerra);
-                        $('.the_nome').text(data.nome);
-                        $('.the_email').text(data.email);
-                        $('.the_tel').text(data.tel_contato);
-
-                        $('.the_tipo').text(data.user_tipo.tipo);
-                        $('.the_om').text(data.om.name);
-                        $('.the_token').text(data.token.token + ' ( Gerado por: ' + data.token.gerador_tokens.posto_grad + ' ' + data.token.gerador_tokens.nome_guerra + ' - ' + data.token.gerador_tokens.om.sigla + ' ) ');
-
-                        // show modal
-                        $('#exibe_pessoa').modal('show');
-                    },
-                    error: function () {
-
-                        // alert de erro
-                        toastr.error('Não foi possível obter as informações!', 'Falha!');
-
-                    }
-
-                });
-
-            });
-
-
-            // retorna os possiveis tipos que a OM admite cadastro
-            $(document).on('change', '#select_om_new_user , #om_user_edit', function (e) {
-
-                e.preventDefault();
-
-                const id = $(this).val();
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/mytypes/' + id,
-
-                    beforeSend: function () {
-
-                        $('#selectContainer').LoadingOverlay("show");
-                        $('#selectContainer_edit').LoadingOverlay("show");
-
-                    },
-                    success: function (data) {
-
-                        $('#select_space').removeClass('d-none');
-
-
-                        $('#select_type_new_user').empty();
-                        $('#type_user_edit').empty();
-
-                        for (let i = 0; i < data.length; i++) {
-                            $('#select_type_new_user, #type_user_edit').append('<option>' + data[i] + '</option>');
-                        }
-
-
-                        $('#selectContainer').LoadingOverlay("hide");
-                        $('#selectContainer_edit').LoadingOverlay("hide");
-
-
-                    },
-                    error: function () {
-
-                        // alert de erro
-                        toastr.error('Não foi possível obter as informações!', 'Falha!');
-
-                    }
-
-                });
-
-
-            });
-
-
-            // ao clicar ajusta para gerar uma nova chave
-            $(document).on('click', '#botao_gerar_nova', function (e) {
-
-                e.preventDefault();
-
-                $('#sub_espaco_inputs').removeClass('d-none');
-                $('#retorno_chave').addClass('d-none');
-                $('#botao_gerar_nova').addClass('d-none');
-                $('#botao_submit').removeClass('d-none');
-                $('#select_space').addClass('d-none');
-                $('#cancel_new_user').text('Cancelar');
-
-                $('#dado_new_user').val('');
-                $('#select_om_new_user').val('');
-                $('#select_type_new_user').empty();
-
-            });
-
-
-
-            // muda status user (Ativo Inativo)
-            $(document).on('click', '.btn_desativa', function (e) {
-
-                e.preventDefault();
-
-                var id = $(this).attr('id').split('_')[1];
-
-                if ($(this).hasClass('btn-outline-dark')) {
-
-                    // alerta de erro
-                    toastr.error('Você não pode desativar um usuário resetado!', 'Erro!');
-
-                } else {
-
-                    $.confirm({
-                        title: 'Você esta certo disso?',
-                        content: 'A ação de desativar um usuário vai impedir o mesmo de ter acesso ao CopReports, no entanto manterá todos os dados relativos a histórico de ações e acessos!',
-                        buttons: {
-                            Confirmar: {
-                                action: function () {
-
-                                    $.ajaxSetup({
-                                        headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                        }
-                                    });
-
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '/user/status/' + id,
-
-                                        data: {
-                                            _method: 'GET',
-                                        },
-                                        success: function (data) {
-
-                                            var $userTable = $('#user_table').dataTable();
-
-                                            // The second parameter will be the row, and the third is the column.
-                                            $userTable.fnUpdate(data.status, '#user_' + id, 5);
-
-                                            //arruma botão
-
-                                            if (data.status == 'Inativo') {
-
-                                                $('#desativa_' + id).removeClass('btn-outline-danger').addClass('btn-outline-primary');
-                                                $('#iconStatus_' + id).removeClass('fa-ban').addClass('fa-check-circle');
-                                                $('#desativa_' + id).attr('data-tippy-content', 'Ativar Pessoa');
-
-                                            } else if (data.status == 'Ativo') {
-
-                                                $('#desativa_' + id).addClass('btn-outline-danger').removeClass('btn-outline-primary');
-                                                $('#iconStatus_' + id).addClass('fa-ban').removeClass('fa-check-circle');
-                                                $('#desativa_' + id).attr('data-tippy-content', 'Desativar Pessoa');
-
-                                            }
-
-                                            // reload tippy
-                                            tippy('[data-tippy-content]');
-
-                                            // alerta de sucesso
-                                            toastr.success('O usuário foi desativado com sucesso!', 'Sucesso!');
-
-                                        },
-                                        error: function (data) {
-
-                                            // alert de erro
-                                            toastr.error('Não foi possível desativar o usuário!', 'Falha!');
-
-                                        }
-
-                                    });
-                                },
-                                btnClass: 'btn-outline-dark'
-                            },
-                            Cancelar: {
-                                btnClass: 'btn-outline-danger'
-                            },
-                        },
-                        columnClass: 'col-md-6'
-                    });
-                }
-
-            });
-
-            // abre o modal de editar pessoa
-            $(document).on('click', '.btn_edit', function (e) {
-
-                e.preventDefault();
-
-                var id = $(this).attr('id').split('_')[1];
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/admin/usermanager/' + id,
-
-                    success: function (data) {
-
-                        $('.the_posto_grad').text(data.posto_grad);
-                        $('.the_nome_guerra').text(data.nome_guerra);
-
-                        $('#id_user_edit').val(data.id);
-
-                        $('#nome_user_edit').val(data.nome);
-                        $('#nome_guerra_user_edit').val(data.nome_guerra);
-
-                        $('#email_user_edit').val(data.email);
-                        $('#tel_user_edit').val(data.tel_contato);
-
-                        $('#posto_grad_user_edit').val(data.posto_grad)
-
-                        var id_my_om = data.om.id;
-                        var meutipo_edit = data.user_tipo.tipo;
-
-                        // monta o select de OM possiveis
-                        $.ajax({
-                            type: 'GET',
-                            url: '/myom',
-
-                            success: function (data) {
-
-                                $('#om_user_edit').empty();
-
-                                const arrayOms = [];
-
-                                function omRecursiva(om) {
-                                    return om.map(function (oms) {
-                                        const existeSubordinada = oms.om.length;
-
-                                        const newOptions = {
-                                            id: oms.id,
-                                            name: oms.sigla,
-                                        };
-
-                                        if (existeSubordinada > 0) {
-                                            omRecursiva(oms.om);
-                                        }
-
-                                        arrayOms.push(newOptions);
-                                    });
-                                }
-
-                                const oms = data;
-
-                                oms.map((teste) => {
-                                    arrayOms.push({id: teste.id, name: teste.sigla});
-                                    const resul = omRecursiva(teste.om);
-                                    return resul;
-                                });
-
-                                let options = '<option value=""> --- Selecione ---</option>';
-
-                                arrayOms.map(function (resultadoFinal) {
-
-                                    let selecionado = '';
-
-                                    if (resultadoFinal.id == id_my_om) {
-                                        selecionado = 'selected';
-                                    }
-
-                                    options += `<option ${selecionado} value=${resultadoFinal.id}>${resultadoFinal.name}</option>`;
-                                })
-
-                                $('#om_user_edit').append(options);
-
-
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/mytypes/' + id,
-
-                                    beforeSend: function () {
-
-                                        $('#selectContainer_edit').LoadingOverlay("show");
-
-                                    },
-                                    success: function (data) {
-
-                                        $('#type_user_edit').empty();
-
-                                        for (let i = 0; i < data.length; i++) {
-
-                                            var typeUserEditSelected = '';
-                                            if (data[i] == meutipo_edit) {
-                                                typeUserEditSelected = 'selected';
-                                            }
-
-                                            $('#type_user_edit').append('<option ' + typeUserEditSelected + '>' + data[i] + '</option>');
-                                        }
-
-
-                                        $('#selectContainer_edit').LoadingOverlay("hide");
-
-
-                                    },
-                                    error: function () {
-
-                                        // alert de erro
-                                        toastr.error('Não foi possível obter as informações!', 'Falha!');
-
-                                    }
-
-                                });
-
-
-                            },
-                            error: function () {
-
-                                // alert de erro
-                                toastr.error('Não foi possível obter as informações!', 'Falha!');
-
-                            }
-
-                        });
-
-                        $('.the_token').text(data.token.token + ' ( Gerado por: ' + data.token.gerador_tokens.posto_grad + ' ' + data.token.gerador_tokens.nome_guerra + ' - ' + data.token.gerador_tokens.om.sigla + ' ) ');
-
-                        // show modal
-                        $('#altera_pessoa').modal('show');
-                    },
-                    error: function () {
-
-                        // alert de erro
-                        toastr.error('Não foi possível obter as informações!', 'Falha!');
-
-                    }
-
-                });
-
-            });
-
             // submete a edição de um usuário já cadastrado
             $(document).on('submit', '#form_alterar_user', function (e) {
 
@@ -1558,141 +1470,6 @@
 
             });
 
-            //renova token
-            $(document).on('click', '.btn_renova_token', function (e) {
-
-                e.preventDefault();
-
-                console.log('renova');
-
-
-                var id = $(this).attr('id').split('_')[1];
-
-                $.confirm({
-                    title: 'Você esta certo disso?',
-                    content: 'A data de criação do Token será ajustada para o dia de hoje. ',
-                    buttons: {
-                        Confirmar: {
-                            action: function () {
-
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                                });
-
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/renovatoken/' + id,
-
-                                    success: function (data) {
-
-                                        // TENHO QUE ATUALIZAR O STATUS DO TOKEN E REMOVER O BOTÃO DE RENOVAR
-                                        var $serialTable = $('#serial_table').dataTable();
-
-                                        // The second parameter will be the row, and the third is the column.
-                                        $serialTable.fnUpdate(data.status, '#serial_' + id, 4);
-
-                                        $('#renovarToken_' + id).next().remove();
-                                        $('#renovarToken_' + id).remove();
-
-                                        // alerta de sucesso
-                                        toastr.success('O Token foi renovado com sucesso!', 'Sucesso!');
-
-                                    },
-                                    error: function () {
-
-                                        // alert de erro
-                                        toastr.error('Não foi possível renovar o Token!', 'Falha!');
-
-                                    }
-
-                                });
-                            },
-                            btnClass: 'btn-outline-dark'
-                        },
-                        Cancelar: {
-                            btnClass: 'btn-outline-danger'
-                        },
-                    },
-                    columnClass: 'col-md-6'
-                });
-
-
-            });
-
-            // remove um token sem dono
-            $(document).on('click', '.btn_exclude_token', function (e) {
-
-                e.preventDefault();
-
-                var id = $(this).attr('id').split('_')[1];
-
-                console.log('excluir token');
-                console.log(id);
-
-                $.confirm({
-                    title: 'Você esta certo disso?',
-                    content: 'A ação de excluir um Token de acesso vai removê-lo definitivamente do sistema, nenhum usuário poderá usar esse token para efetuar o cadastro no CopReports!',
-                    buttons: {
-                        Confirmar: {
-                            action: function () {
-
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                                });
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/token/' + id,
-
-                                    data: {
-                                        _method: 'DELETE',
-                                    },
-                                    success: function (data) {
-
-                                        // remove da tabela do grupo
-                                        var tableSerial = $('#serial_table').DataTable();
-                                        tableSerial.row('tr[id = "serial_' + id + '" ]').remove().draw(false);
-
-
-                                        if (data == 'Ok') {
-
-                                            // alerta de sucesso
-                                            toastr.success('O token foi excluído com sucesso!', 'Sucesso!');
-
-                                        } else {
-
-                                            // alert de erro
-                                            toastr.error(data, 'Falha!');
-
-                                        }
-
-                                    },
-                                    error: function (data) {
-
-                                        console.log(data);
-
-                                        // alert de erro
-                                        toastr.error('Não foi possível excluir o token!', 'Falha!');
-
-                                    }
-
-                                });
-                            },
-                            btnClass: 'btn-outline-dark'
-                        },
-                        Cancelar: {
-                            btnClass: 'btn-outline-danger'
-                        },
-                    },
-                    columnClass: 'col-md-6'
-                });
-
-
-            });
 
             // filtra os seriais por tipo de status
             $(document).on('click', '.serialselect', function (e) {
@@ -1815,66 +1592,6 @@
 
             });
 
-            // reseta a senha do usuário
-            $(document).on('click', '.btn_reset', function (e) {
-
-                e.preventDefault();
-
-                var id = $(this).attr('id').split('_')[1];
-
-                $.confirm({
-                    title: 'Você esta certo disso?',
-                    content: 'A senha do usuário será alterada para o email do usuário!',
-                    buttons: {
-                        Confirmar: {
-                            action: function () {
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/resetpasswd/' + id,
-
-                                    success: function (data) {
-
-                                        if (data == 'Success') {
-                                            // alerta de sucesso
-
-
-                                            var $userTable = $('#user_table').dataTable();
-
-                                            // The second parameter will be the row, and the third is the column.
-                                            $userTable.fnUpdate('Resetado', '#user_' + id, 5);
-
-                                            $('#desativa_' + id).removeClass('btn-outline-danger').removeClass('btn-outline-primary').addClass('btn-outline-dark').attr('data-tippy-content', 'Usuário resetado aguardando acesso');
-                                            $('#iconStatus_' + id).removeClass('fa-ban').removeClass('fa-check-circle').addClass('fa-spinner');
-
-                                            // reload tippy
-                                            tippy('[data-tippy-content]');
-
-                                            toastr.success('A senha do usuário foi alterada com sucesso!', 'Sucesso!', {timeOut: 3000});
-                                        } else {
-
-                                            toastr.error('Você não tem permissão para resetar senhas!', 'Falha!', {timeOut: 3000});
-
-                                        }
-                                    },
-                                    error: function () {
-
-                                        // alert de erro
-                                        toastr.error('Não foi possível alterar a senha do usuário!', 'Falha!', {timeOut: 3000});
-
-                                    }
-
-                                });
-                            },
-                            btnClass: 'btn-outline-dark'
-                        },
-                        Cancelar: {
-                            btnClass: 'btn-outline-danger'
-                        },
-                    },
-                    columnClass: 'col-md-6'
-                });
-
-            });
 
         });
     </script>

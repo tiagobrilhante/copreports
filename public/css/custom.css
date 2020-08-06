@@ -34,6 +34,18 @@ html, body {
     background-color: #c6c1bb !important;
 }
 
+.corbox-menor {
+    padding-left: 15px;
+    margin-left: 15px;
+
+}
+
+.corbox-normal {
+    padding-left: 25px;
+    margin-left: 15px;
+
+}
+
 /*Meus css*/
 .blink {
     animation: blinker 1.7s cubic-bezier(.5, 0, 1, 1) infinite alternate;
@@ -351,6 +363,13 @@ a[data-toggle="collapse"] {
     border-radius: 5px !important;
 }
 
+.bordas-circulares{
+    border-color: #000000 !important;
+    border: 1px !important;
+    border-style: solid !important;
+    border-radius: 100% !important;
+}
+
 .separaicon {
     padding-left: 5px;
     padding-right: 5px;
@@ -369,3 +388,18 @@ a[data-toggle="collapse"] {
 #pills-tab-serial > li > a.active {
     background-color: #635555 !important;
 }
+
+.bola {
+    border-radius: 50%;
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin-bottom: 0;
+    border: 1px solid #000000;
+}
+
+.btn-xsm{
+    padding:.25rem .5rem;
+    font-size:.6500rem;
+    line-height:1.5;
+    border-radius:.2rem}

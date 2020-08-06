@@ -62,4 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     // controles de missão de emprego
     Route::resource('memanager', 'MissaoEmpregoController');
 
+    // controles de sub item de missão de emprego
+    Route::resource('simemanager', 'MissaoEmpregoSubItemController');
+
 });
