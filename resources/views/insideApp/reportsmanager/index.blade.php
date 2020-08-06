@@ -67,20 +67,21 @@
 
                     <div class="alert alert-meu">
 
-                        <h5>Missões de emprego cadastradas</h5>
+                        <h5 id="h5_principal">Missões de emprego cadastradas</h5>
 
 
                         @foreach ($missoesEmprego as $missaoEmprego)
 
-                            <div class="alert alert-dark">
+                            <div class="alert alert-dark" id="cardMe_{{$missaoEmprego->id}}">
 
                                 <div class="row">
 
                                     <div class="col-10">
 
-                                        <span class="audiowide"> {{ $missaoEmprego->missao }} </span> <span
-                                            class="corbox-normal bordas"
-                                            style="background-color: {{ $missaoEmprego->cor }};"></span> <br>
+                                        <span class="audiowide"> {{ $missaoEmprego->missao }} </span>
+                                        <span class="corbox-normal bordas"
+                                              style="background-color: {{ $missaoEmprego->cor }};"></span>
+                                        <br>
 
                                     </div>
 
@@ -98,26 +99,32 @@
 
                                 </div>
 
-                                @if(count($missaoEmprego->subItens) > 0)
+                                <div id="les_si_{{$missaoEmprego->id}}"
+                                     class="@if(count($missaoEmprego->subItens) == 0) d-none @endif ">
+
                                     <p>Sub Itens</p>
 
-                                    <ul>
-                                        @foreach($missaoEmprego->subItens as $si)
-                                            <li>{{$si->sub_item}} <span class="bola"
-                                                                        style="background-color: {{ $si->cor }};"></span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                    <div id="list_si_for_index_{{$missaoEmprego->id}}">
 
-                                @endif
+                                        <ul>
+                                            @foreach($missaoEmprego->subItens as $si)
+                                                <li class="lililist_{{$missaoEmprego->id}}"
+                                                    id="itemsilist_{{$si->id}}">{{$si->sub_item}} <span class="bola"
+                                                                                                        style="background-color: {{ $si->cor }};"></span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+
+                                    </div>
+                                </div>
 
 
                             </div>
 
-
                         @endforeach
 
                     </div>
+
                 </div>
 
                 {{--espaço para ações--}}
@@ -194,7 +201,6 @@
 
                         </div>
 
-
                         {{--input da Missão de emprego--}}
                         <div class="row">
 
@@ -216,7 +222,7 @@
 
                         </div>
 
-
+                        {{--espaços para sub itens--}}
                         <div class="row">
                             <div class="col">
                                 <button type="button" class="btn btn-sm btn-outline-dark" id="le_st_button">Adicionar
@@ -374,7 +380,7 @@
                             </div>
 
 
-                            <div class="alert alert-meu text-center pt-3" id="no_si_edit">
+                            <div class="alert alert-meu text-center pt-3 mt-3" id="no_si_edit">
                                 Não existem subitens cadastrados
                             </div>
 
@@ -545,7 +551,7 @@
                 return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
             }
 
-            // abre o modal de cadastro de novos usuários e monta o select de OM
+            // abre o modal de cadastro de novas missões de emprego
             $(document).on('click', '#new_missaoEmprego', function (e) {
 
                 e.preventDefault();
@@ -577,14 +583,18 @@
 
                 e.preventDefault(e);
 
-                let le_su_itens = [];
+                let le_su_itens = [''];
 
-                for (let i = 0; i < $('.le_array_si').length; i++) {
+                if($('.le_array_si').length > 0){
+                    le_su_itens=[];
 
-                    le_su_itens.push($('.le_array_si').eq(i).val())
+                    for (let i = 0; i < $('.le_array_si').length; i++) {
+
+                        le_su_itens.push($('.le_array_si').eq(i).val())
+
+                    }
 
                 }
-
 
                 $.ajax({
                     type: 'POST',
@@ -599,6 +609,44 @@
 
                         console.log(data);
 
+                        let tem_si = '';
+                        let quais_si = '';
+                        if (data.sub_itens.length = 0) {
+                            tem_si = 'd-none';
+
+                            /// montador de li
+
+                            for (let i = 0; i < data.sub_itens.length; i++) {
+
+                                quais_si += '<li class="lililist_' + data.id + '" id = "itemsilist_' + data.sub_itens.id + '" >' + data.sub_itens.sub_item + ' <span class="bola" style = "background-color: ' + data.sub_itens.cor + ';" > < /span></li>';
+
+                            }
+
+
+                        }
+
+                        let space_for_new_card = '<div class="alert alert-dark" id="cardMe_' + data.id + '">' +
+                            '<div class="row">' +
+                            '<div class="col-10">' +
+                            '<span class="audiowide"> ' + data.missao + ' </span>' +
+                            '<span class="corbox-normal bordas" style="background-color: ' + data.cor + ';"></span>' +
+                            '<br>' +
+                            '</div>' +
+                            '<div class="col-2 text-right">' +
+                            '<a href="#" class="link-simples btn_editante" id="edit_' + data.id + '"><i class="fa fa-edit"></i></a>' +
+                            '<span class="separaicon"></span>' +
+                            '<a href="#" class="link-simples btn_excludente" id="exclude_' + data.id + '"><i class="fa fa-trash"></i></a>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div id="les_si_' + data.id + '" class="' + tem_si + '">' +
+                            '<p> Sub Itens </p>' +
+                            '<div id = "list_si_for_index_' + data.id + '"><ul>' + quais_si +
+                            '</ul>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+                        $('#h5_principal').after(space_for_new_card);
 
                         // alerta de sucesso
                         toastr.success('A missão de emprego foi cadastrada com sucesso!', 'Sucesso!');
@@ -657,9 +705,17 @@
 
                 var le_inputs_number = $('.counter_input').length;
 
+
                 if (le_inputs_number == 0) {
 
                     $('#base_st_space').addClass('d-none');
+
+
+                    if ($('#list_si_for_edit ul li').length == 0) {
+
+                        $('#no_si_edit').removeClass('d-none');
+
+                    }
 
                 }
 
@@ -695,6 +751,7 @@
                                     },
                                     success: function (data) {
 
+                                        $('#cardMe_' + id).remove();
 
                                         // alerta de sucesso
                                         toastr.success('A missão de emrpego foi removida com sucesso.', 'Sucesso!');
@@ -733,6 +790,8 @@
                     url: '/memanager/' + id,
 
                     success: function (data) {
+
+                        console.log(data);
 
                         $('#space_for_edit_si_inputs').empty();
                         $('#list_si_for_edit').empty();
@@ -791,6 +850,8 @@
 
                 e.preventDefault();
 
+                $('#no_si_edit').addClass('d-none');
+
                 var teste = $('#base_st_inputs_space').clone();
 
                 teste.attr('id', 'st_edit_inputs_' + le_add_edit_si)
@@ -833,21 +894,21 @@
                     leinfoinisi += ` <!--ref --> <li class="lilieditlist_${id_me}" id="itemsieditli_${ideditind}">${tttext} <span class="bola" style="background-color: ${coloreditind};"></li>`;
 
                     modularinputs += '<div class="row" id="inpputttsi_' + ideditind + '">' +
-                        '<div class="col-9">' +
-                        '<div class="form-group">' +
-                        '<input type="text" class="form-control le_olds_si_name" id="me_si_edit_input_' + ideditind + '" value="' + tttext + '">' +
-                        '<input type="hidden" class="le_olds_si_id" id="me_si_edit_id_input_' + ideditind + '" value="' + ideditind + '">' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-2">' +
-                        '<input type="color" class="form-control le_olds_si_color" id="cor_me_edit_input_' + ideditind + '" value="' + coloreditind + '">' +
-                        '</div>' +
-                        '<div class="col-1">' +
-                        '<button data-id="'+id_me+'" type="button" class="btn btn-danger remove_si_edit_window" id="removemesieditinput_' + ideditind + '"><i class="fa fa-trash"></i></button>' +
-                        '</div>' +
-                        '</div>';
+                    '<div class="col-9">' +
+                    '<div class="form-group">' +
+                    '<input type="text" class="form-control le_olds_si_name" id="me_si_edit_input_' + ideditind + '" value="' + tttext + '">' +
+                    '<input type="hidden" class="le_olds_si_id" id="me_si_edit_id_input_' + ideditind + '" value="' + ideditind + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<input type="color" class="form-control le_olds_si_color" id="cor_me_edit_input_' + ideditind + '" value="' + coloreditind + '">' +
+                    '</div>' +
+                    '<div class="col-1">' +
+                    '<button data-id="'+id_me+'" type="button" class="btn btn-danger remove_si_edit_window" id="removemesieditinput_' + ideditind + '"><i class="fa fa-trash"></i></button>' +
+                    '</div>' +
+                    '</div>';
 
-                });
+                    });
 
                 $('#list_si_for_edit').empty();
 
@@ -933,8 +994,46 @@
 
                     success: function (data) {
 
-
                         console.log(data);
+
+                        const le_card = $('#cardMe_' + id);
+
+                        le_card.children().children().children().eq(0).text(data.missao);
+                        le_card.children().children().children().eq(1).css('background-color', data.cor);
+
+                        $('#list_si_for_index_' + data.id).empty();
+
+                        let listanova = '<ul>';
+
+                        if (data.sub_itens.length > 0) {
+
+                            $('#les_si_' + id).removeClass('d-none');
+
+                            for (let i = 0; i < data.sub_itens.length; i++) {
+
+                                listanova += '<li class="lililist_' + data.id + '" id="itemsilist_' + data.sub_itens[i].id + '">' + data.sub_itens[i].sub_item + ' <span class="bola" style="background-color: ' + data.sub_itens[i].cor + ';"></span></li>';
+
+                            }
+
+
+                        } else {
+
+                            $('#les_si_' + id).addClass('d-none');
+
+                        }
+
+                        listanova += '</ul>';
+
+                        console.log(listanova);
+
+                        $('#list_si_for_index_' + data.id).append(listanova);
+
+
+                        // hide modal
+
+
+                        $('#altera_me').modal('hide');
+                        toastr.success('Missão de emprego alterada com sucesso!', 'Sucesso!');
 
 
                     },
@@ -958,9 +1057,6 @@
                 let id = $(this).attr('id').split('_')[1];
                 let id_me = $(this).data('id');
 
-                console.log(id_me);
-
-
                 $.confirm({
                     title: 'Você esta certo disso?',
                     content: 'A ação de excluir uma sub item de missão de emprego é altamente prejudicial ao sistema! Tenha certeza absoluta do que está fazendo, pois isso vai gerar um enorme impacto em todas as missões e relatórios existentes.',
@@ -983,53 +1079,44 @@
                                     },
                                     success: function (data) {
 
-                                        console.log('leinfoini entrando');
-                                        console.log(leinfoinisi);
-                                        console.log('leinfoini entrando fim');
-
                                         // remove o input
                                         $('#inpputttsi_' + id).remove();
 
+                                        // remove da lista na tela principal
+                                        $('#itemsilist_' + id).remove();
 
                                         // arrumando o cancel
-                                            var ajuste = leinfoinisi.split('<!--ref -->');
+                                        var ajuste = leinfoinisi.split('<!--ref -->');
 
-                                            console.log('entrada da array dividida por ref');
-                                            console.log(ajuste);
-                                            console.log('fim entrada array dividida por ref');
+                                        const coisa = 'id="itemsieditli_' + id + '"';
 
-                                            for (let i = 0; i < ajuste.length ; i++) {
+                                        for (let i = 0; i < ajuste.length; i++) {
 
-                                                if (ajuste[i].match('itemsieditli_'+id)){
+                                            if (ajuste[i].indexOf(coisa) != -1) {
 
-                                                    ajuste.splice(i);
-
-                                                }
+                                                ajuste.splice(i, 1);
 
                                             }
 
-                                            console.log('depois de remover');
-                                            console.log(ajuste);
-                                            console.log('fim depois de remover');
+                                        }
 
-                                            leinfoinisi = '';
+                                        leinfoinisi = '';
 
-                                            for (let i = 0; i < ajuste.length ; i++) {
+                                        // reajusta o cancel conforme a nova lista
+                                        for (let i = 0; i < ajuste.length; i++) {
 
-                                                 leinfoinisi += `${ajuste[i]}`;
+                                            leinfoinisi += `${ajuste[i]}`;
 
+                                        }
 
-                                            }
+                                        if ($('#list_si_for_edit ul li').length == 0 && $('#list_si_for_edit .row').length == 0) {
 
-                                            console.log('leinfoinisi');
-                                            console.log(leinfoinisi);
+                                            $('#no_si_edit').removeClass('d-none');
 
-
-
-
+                                        }
 
                                         // alerta de sucesso
-                                        toastr.success('O sub item da missão de emrpego foi removido com sucesso.', 'Sucesso!');
+                                        toastr.success('O sub item da missão de emprego foi removido com sucesso.', 'Sucesso!');
 
                                     },
                                     error: function () {

@@ -25,9 +25,9 @@ class MissaoEmpregoSubItens extends Model
 
     ];
 
-    public function om()
+    public function me()
     {
-        return $this->belongsTo(MissaoEmprego::class);
+        return $this->belongsTo(MissaoEmprego::class,'missao_emprego_id');
     }
 
 

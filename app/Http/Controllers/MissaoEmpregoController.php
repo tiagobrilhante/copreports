@@ -30,10 +30,9 @@ class MissaoEmpregoController extends Controller
         $missaoEmprego = MissaoEmprego::create([
             'missao' => $missao,
             'cor' => $cor
-
         ]);
 
-        if (count($request['subitens']) > 0) {
+        if (!in_array(null, $request['subitens'])) {
 
             for ($i = 0; $i < count($request['subitens']); $i++) {
 
@@ -48,6 +47,7 @@ class MissaoEmpregoController extends Controller
 
 
         return $missaoEmprego->load('subItens');
+
     }
 
     // exclui uma missão de emprego
@@ -80,9 +80,9 @@ class MissaoEmpregoController extends Controller
 
 
         // atualiza os si já existentes
-        if (!in_array(null, $request['si_id_editada'])){
+        if (!in_array(null, $request['si_id_editada'])) {
 
-            for ($i = 0; $i < count($request['si_id_editada']); $i++){
+            for ($i = 0; $i < count($request['si_id_editada']); $i++) {
 
                 $si_update = MissaoEmpregoSubItens::find($request['si_id_editada'][$i]);
 
@@ -96,13 +96,13 @@ class MissaoEmpregoController extends Controller
         }
 
         // cria os novos SI recebidos
-        if (!in_array(null, $request['novas_si'])){
-            for ($i = 0; $i< count($request['novas_si']); $i++){
+        if (!in_array(null, $request['novas_si'])) {
+            for ($i = 0; $i < count($request['novas_si']); $i++) {
 
                 MissaoEmpregoSubItens::create([
-                    'sub_item'=>$request['novas_si'][$i],
-                    'cor'=>corAleatoria(),
-                    'missao_emprego_id'=>$me->id,
+                    'sub_item' => $request['novas_si'][$i],
+                    'cor' => corAleatoria(),
+                    'missao_emprego_id' => $me->id,
 
                 ]);
 
