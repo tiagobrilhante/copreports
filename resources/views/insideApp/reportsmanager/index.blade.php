@@ -580,22 +580,14 @@
 
             // cria uma nova Missão de Emprego
             $(document).on('submit', '#form_me', function (e) {
-
                 e.preventDefault(e);
-
                 let le_su_itens = [''];
-
-                if($('.le_array_si').length > 0){
-                    le_su_itens=[];
-
+                if ($('.le_array_si').length > 0) {
+                    le_su_itens = [];
                     for (let i = 0; i < $('.le_array_si').length; i++) {
-
-                        le_su_itens.push($('.le_array_si').eq(i).val())
-
+                        le_su_itens.push($('.le_array_si').eq(i).val());
                     }
-
                 }
-
                 $.ajax({
                     type: 'POST',
                     url: '/memanager',
@@ -609,21 +601,30 @@
 
                         console.log(data);
 
+
                         let tem_si = '';
                         let quais_si = '';
-                        if (data.sub_itens.length = 0) {
+
+                        console.log(data.sub_itens.length)
+
+                        if (data.sub_itens.length == 0) {
+
                             tem_si = 'd-none';
 
                             /// montador de li
 
+                        } else {
+
                             for (let i = 0; i < data.sub_itens.length; i++) {
 
-                                quais_si += '<li class="lililist_' + data.id + '" id = "itemsilist_' + data.sub_itens.id + '" >' + data.sub_itens.sub_item + ' <span class="bola" style = "background-color: ' + data.sub_itens.cor + ';" > < /span></li>';
+                                quais_si += '<li class="lililist_' + data.id + '" id = "itemsilist_' + data.sub_itens[i].id + '" >' + data.sub_itens[i].sub_item + ' <span class="bola" style = "background-color: ' + data.sub_itens[i].cor + ';" > </span></li>';
 
                             }
 
-
                         }
+
+                        console.log('quais_si');
+                        console.log(quais_si);
 
                         let space_for_new_card = '<div class="alert alert-dark" id="cardMe_' + data.id + '">' +
                             '<div class="row">' +
@@ -640,7 +641,8 @@
                             '</div>' +
                             '<div id="les_si_' + data.id + '" class="' + tem_si + '">' +
                             '<p> Sub Itens </p>' +
-                            '<div id = "list_si_for_index_' + data.id + '"><ul>' + quais_si +
+                            '<div id = "list_si_for_index_' + data.id + '">' +
+                            '<ul>' + quais_si +
                             '</ul>' +
                             '</div>' +
                             '</div>' +
@@ -652,7 +654,6 @@
                         toastr.success('A missão de emprego foi cadastrada com sucesso!', 'Sucesso!');
 
                         $('#cadastra_missaoEmprego').modal('hide');
-
 
                     },
                     error: function (data) {

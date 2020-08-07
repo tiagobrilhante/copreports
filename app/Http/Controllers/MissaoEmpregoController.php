@@ -45,7 +45,7 @@ class MissaoEmpregoController extends Controller
 
         }
 
-
+        //return json_encode($missaoEmprego->load('subItens'));
         return $missaoEmprego->load('subItens');
 
     }
@@ -77,7 +77,6 @@ class MissaoEmpregoController extends Controller
             'missao' => $request['missao'],
             'cor' => $request['cor'],
         ]);
-
 
         // atualiza os si já existentes
         if (!in_array(null, $request['si_id_editada'])) {
