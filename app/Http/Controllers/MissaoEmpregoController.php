@@ -12,13 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class MissaoEmpregoController extends Controller
 {
-    public function index()
-    {
-
-        $missoesEmprego = MissaoEmprego::all()->load('subItens');
-
-        return view('insideApp.reportsmanager.index', compact('missoesEmprego'));
-    }
 
     // cria uma nova missão de emprego
     public function store(StoreMissaoEmpregoRequest $request)

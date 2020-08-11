@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MissaoEmpregoSubItens;
+use App\Models\AcaoSubDivisao;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 
-class MissaoEmpregoSubItemController extends Controller
+class AcaoSubDivisaoController extends Controller
 {
 
     // exclui um sub item de missão de emprego
     public function destroy($id)
     {
-        $subitem = MissaoEmpregoSubItens::find($id);
+        $subdivisao = AcaoSubDivisao::find($id);
 
-        $subitem->delete();
+        $subdivisao->delete();
     }
 
 }

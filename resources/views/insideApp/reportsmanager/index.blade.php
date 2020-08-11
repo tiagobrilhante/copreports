@@ -10,21 +10,9 @@
 
             <div class="row">
 
-                <div class="col">
 
-                    {{ __('Gerenciamento de Tipos de Relatórios') }}
+                {{ __('Gerenciamento de Tipos de Relatórios') }}
 
-                </div>
-
-                <div class="col text-right">
-
-                    {{--add new missão de emprego button--}}
-                    <button class="btn btn-sm btn-outline-primary" id="new_missaoEmprego"><i
-                            class="fa fa-plus-circle pr-2"></i>
-                        Adicionar nova missão de emprego
-                    </button>
-
-                </div>
 
             </div>
 
@@ -62,13 +50,20 @@
             {{--pills content--}}
             <div class="tab-content" id="pills-tabContent">
 
-                {{--espaço para Tipos--}}
+                {{--espaço Missões de Emprego--}}
                 <div class="tab-pane show active" id="pills-missoesEmprego" role="tabpanel">
 
                     <div class="alert alert-meu">
 
-                        <h5 id="h5_principal">Missões de emprego cadastradas</h5>
+                        <h5 id="h5_principal">Missões de emprego cadastradas
 
+                            {{--add new missão de emprego button--}}
+                            <button class="btn btn-sm btn-outline-dark ml-5" id="new_missaoEmprego"><i
+                                    class="fa fa-plus-circle pr-2"></i>
+                                Adicionar nova missão de emprego
+                            </button>
+
+                        </h5>
 
                         @foreach ($missoesEmprego as $missaoEmprego)
 
@@ -88,11 +83,13 @@
                                     <div class="col-2 text-right">
 
                                         <a href="#" class="link-simples btn_editante"
+                                           data-tippy-content="Editar Missão de Emprego"
                                            id="edit_{{$missaoEmprego->id}}"><i class="fa fa-edit"></i></a>
 
                                         <span class="separaicon"></span>
 
                                         <a href="#" class="link-simples btn_excludente"
+                                           data-tippy-content="Excluir Missão de Emprego"
                                            id="exclude_{{$missaoEmprego->id}}"><i class="fa fa-trash"></i></a>
 
                                     </div>
@@ -107,17 +104,19 @@
                                     <div id="list_si_for_index_{{$missaoEmprego->id}}">
 
                                         <ul>
+
                                             @foreach($missaoEmprego->subItens as $si)
                                                 <li class="lililist_{{$missaoEmprego->id}}"
                                                     id="itemsilist_{{$si->id}}">{{$si->sub_item}} <span class="bola"
                                                                                                         style="background-color: {{ $si->cor }};"></span>
                                                 </li>
                                             @endforeach
+
                                         </ul>
 
                                     </div>
-                                </div>
 
+                                </div>
 
                             </div>
 
@@ -130,7 +129,77 @@
                 {{--espaço para ações--}}
                 <div class="tab-pane " id="pills-action" role="tabpanel" aria-labelledby="pills-action-tab">
 
-                    acoes
+                    <div class="alert alert-meu">
+
+                        <h5 id="h5_principal_acao">Ações possíveis cadastradas
+
+                            {{--add new acao button--}}
+                            <button class="btn btn-sm btn-outline-dark ml-5" id="new_acao"><i
+                                    class="fa fa-plus-circle pr-2"></i>
+                                Adicionar nova ação
+                            </button>
+
+                        </h5>
+
+                        @foreach ($acoes as $acao)
+
+                            <div class="alert alert-dark" id="cardAction_{{$acao->id}}">
+
+                                <div class="row">
+
+                                    <div class="col-10">
+
+                                        <span class="audiowide"> {{ $acao->acao }} </span>
+                                        <span class="corbox-normal bordas"
+                                              style="background-color: {{ $acao->cor }};"></span>
+                                        <br>
+
+                                    </div>
+
+                                    <div class="col-2 text-right">
+
+                                        <a href="#" class="link-simples btn_acao_editante"
+                                           data-tippy-content="Editar Ação"
+                                           id="editAction_{{$acao->id}}"><i class="fa fa-edit"></i></a>
+
+                                        <span class="separaicon"></span>
+
+                                        <a href="#" class="link-simples btn_acao_excludente"
+                                           data-tippy-content="Excluir Ação"
+                                           id="excludeAction_{{$acao->id}}"><i class="fa fa-trash"></i></a>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="les_sd_{{$acao->id}}"
+                                     class="@if(count($acao->subDivisao) == 0) d-none @endif ">
+
+                                    <p>Sub Divisões</p>
+
+                                    <div id="list_sd_for_index_{{$acao->id}}">
+
+                                        <ul>
+
+                                            @foreach($acao->subDivisao as $sd)
+                                                <li class="lililistsd_{{$acao->id}}"
+                                                    id="itemsilistsd_{{$sd->id}}">{{$sd->sub_divisao}} <span
+                                                        class="bola"
+                                                        style="background-color: {{ $sd->cor }};"></span>
+                                                </li>
+                                            @endforeach
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
 
                 </div>
 
@@ -147,6 +216,8 @@
 
     </div>
 
+
+    {{----------Missão de Emprego------------}}
 
     {{--modal de cadastrar uma missão de emprego--}}
     <div class="modal fade" id="cadastra_missaoEmprego" tabindex="-1" role="dialog"
@@ -257,6 +328,7 @@
                                                 <label>Ações</label>
 
                                                 <button type="button" class="btn btn-danger button_exclude_st"
+                                                        data-tippy-content="Excluir Sub Tipo"
                                                         id="btn_st_me_base"><i class="fa fa-trash"></i></button>
 
                                             </div>
@@ -333,7 +405,7 @@
                                         <input type="hidden" id="me_edit_id">
 
 
-                                        <small id="me_help" class="form-text text-muted">Altere a missão de emprego se
+                                        <small id="me_edit_help" class="form-text text-muted">Altere a missão de emprego se
                                             desejar.</small>
 
                                     </div>
@@ -372,8 +444,9 @@
                                 <div class="col-3 text-right">
 
                                     <a href="#" class="link-simples btn_si_editante" id="editsi_"><i
-                                            class="fa fa-edit"></i></a>
-                                    <a href="#" class="link-simples btn_si_cancelante d-none" id="cancelsi_"><i
+                                            class="fa fa-edit" data-tippy-content="Editar Sub Item"></i></a>
+                                    <a href="#" class="link-simples btn_si_cancelante d-none" id="cancelsi_"
+                                       data-tippy-content="Cancelar a edição de Sub Item"><i
                                             class="fa fa-ban"></i></a>
 
                                 </div>
@@ -410,95 +483,137 @@
 
     </div>
 
+    {{----------Ações------------}}
 
-    {{--modal de exibir dados de uma pessoa--}}
-    <div class="modal fade" id="exibe_pessoa" tabindex="-1" role="dialog"
-         aria-labelledby="exibe_pessoaLabel"
+    {{--modal de cadastrar uma acao --}}
+    <div class="modal fade" id="cadastra_acao" tabindex="-1" role="dialog"
+         aria-labelledby="cadastra_acaoLabel"
          aria-hidden="true">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
 
             <div class="modal-content">
 
+                {{--modal header--}}
                 <div class="modal-header">
-                    <h5 class="modal-title">Detalhes - <span class="the_posto_grad"></span> <span
-                            class="the_nome_guerra"></span></h5>
+
+                    <h5 class="modal-title">Cadastramento de Ação</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
                 </div>
 
-                {{--modal body--}}
-                <div class="modal-body">
 
-                    <div class=" alert alert-meu">
+                <form id="form_acao">
 
-                        {{---nome e nome de guerra (posto)--}}
+                    {{--modal body--}}
+                    <div class="modal-body">
+
+                        {{--explicação geral--}}
                         <div class="row">
 
-                            {{--nome--}}
                             <div class="col">
 
-                                <b>Nome: </b> <span class="the_nome"></span>
+                                <div class="alert alert-dark text-justify">
 
-                            </div>
+                                    <h3>Sobre o cadastramento de Ações</h3>
 
-                            {{--nome de guerra / posto--}}
-                            <div class="col">
+                                    <p>As ações devem ser deselvolvidas de forma que estejam em acordo com as Missões de
+                                        Emprego.</p>
+                                    <p>Você deve cadastrar todas as ações possíveis para qualquer tipo de Operação
+                                        existente.</p>
+                                    <p>Também é possível especificar a ação de forma detalhada através de sus sub
+                                        divisões.</p>
 
-                                <b>Nome de Guerra: </b> <span class="the_posto_grad"></span> <span
-                                    class="the_nome_guerra"></span>
+                                    <p>por exemplo: </p>
 
-                            </div>
+                                    <ul>
+                                        <li>Patrulhamento (ação)
+                                            <ul>
+                                                <li>Terrestre (sub divisão)</li>
+                                                <li>Aeromóvel (sub divisão)</li>
+                                            </ul>
+                                        </li>
+                                        <li>Reconhecimento (ação)
+                                            <ul>
+                                                <li>Naval (sub divisão)</li>
+                                                <li>Terrestre (sub divisão)</li>
+                                            </ul>
+                                        </li>
 
-                        </div>
+                                    </ul>
 
-                        {{---email e tel contato--}}
-                        <div class="row">
-
-                            {{--email--}}
-                            <div class="col">
-
-                                <b>Email: </b> <span class="the_email"></span>
-
-                            </div>
-
-                            {{--tel contato--}}
-                            <div class="col">
-
-                                <b>Telefone de Contato: </b> <span class="the_tel"></span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div id="espaco_forma" class="d-none">
-                            <div class="row">
-                                <div class="col">
-                                    <b>Turma de formação: </b> <span class="the_formacao"></span>
                                 </div>
+
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="alert alert-dark">
-
-                        {{---tipo de usuario e om --}}
+                        {{--input da acao--}}
                         <div class="row">
 
-                            {{--tipo de usuario--}}
                             <div class="col">
 
-                                <b>Tipo de usuário: </b> <span class="the_tipo"></span>
+                                <div class="form-group">
+
+                                    <label for="acao_nome">Informe a acao</label>
+
+                                    <input type="text" class="form-control" id="acao_nome"
+                                           aria-describedby="acao_nome_help" required>
+
+                                    <small id="acao_nome_help" class="form-text text-muted">Insira a ação desejada.</small>
+
+                                </div>
 
                             </div>
 
-                            {{--om--}}
+                        </div>
+
+                        {{--espaços para sub divisões--}}
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-sm btn-outline-dark" id="le_sd_button">Adicionar
+                                    Sub Divisões da Ação
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row pt-3 d-none" id="base_sd_space">
+
                             <div class="col">
 
-                                <b>Om: </b> <span class="the_om"></span>
+                                <div class="alert alert-secondary">
+                                    <h5>Acrescente as Sub Divisões</h5>
+
+                                    <div class="alert alert-meu d-none" id="base_sd_inputs_space">
+
+                                        <div class="row">
+
+                                            <div class="col-11">
+
+                                                <label for="sd_acao_base">Sub Divisão</label>
+
+                                                <input type="text" class="form-control" id="sd_acao_base"
+                                                       name="sd_acao_base">
+
+                                            </div>
+
+                                            <div class="col-1 text-center">
+
+                                                <label>Opções</label>
+
+                                                <button type="button" class="btn btn-danger button_exclude_sd"
+                                                        data-tippy-content="Excluir Sub Divisão"
+                                                        id="btn_sd_acao_base"><i class="fa fa-trash"></i></button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -506,19 +621,20 @@
 
                     </div>
 
+                    {{--modal footer - Buttons--}}
+                    <div class="modal-footer">
 
-                    <div class="alert alert-primary">
-                        <b>Token de Acesso: </b> <span class="the_token"></span>
+                        {{--submit--}}
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+                        {{--cancelar--}}
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            Cancelar
+                        </button>
+
                     </div>
 
-
-                </div>
-
-                {{--modal footer--}}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-
-                </div>
+                </form>
 
             </div>
 
@@ -526,6 +642,120 @@
 
     </div>
 
+    {{--modal de alterar acao e subdivisoes--}}
+    <div class="modal fade" id="altera_acao" tabindex="-1" role="dialog"
+         aria-labelledby="altera_acaoLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-xl" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Alteração de Ação - <span class="the_acao"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="form_alterar_acao">
+
+                    {{--modal body--}}
+                    <div class="modal-body">
+
+                        {{--espaço para acao--}}
+                        <div class=" alert alert-meu">
+
+                            {{---acao e cor--}}
+                            <div class="row">
+
+                                {{--acao--}}
+                                <div class="col-9">
+
+                                    <div class="form-group">
+
+                                        <label for="acao_edit">Ação</label>
+                                        <input type="text" class="form-control" id="acao_edit"
+                                               aria-describedby="acao_edit_help">
+
+                                        <input type="hidden" id="acao_edit_id">
+
+
+                                        <small id="acao_edit_help" class="form-text text-muted">Altere a ação se
+                                            desejar.</small>
+
+                                    </div>
+
+                                </div>
+
+                                {{--cor--}}
+                                <div class="col-3">
+
+                                    <label for="cor_acao_edit">Cor</label>
+                                    <input type="color" class="form-control" id="cor_acao_edit"
+                                           aria-describedby="cor_acao_edit_help">
+
+                                    <small id="cor_acao_edit_help" class="form-text text-muted">Altere a cor da ação se desejar.</small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {{--espaço para SD--}}
+                        <div class="alert alert-dark">
+
+                            <div class="row">
+                                <div class="col-9">
+                                    <span class="audiowide">Sub Divisões</span>
+
+                                    <button type="button" class="ml-3 btn btn-outline-primary btn-xsm"
+                                            id="add_new_sd_edit"><i class="fa fa-plus-circle"></i> Adicionar novas sub divisões
+                                    </button>
+
+                                </div>
+                                <div class="col-3 text-right">
+
+                                    <a href="#" class="link-simples btn_sd_editante" id="editsd_"><i
+                                            class="fa fa-edit" data-tippy-content="Editar Sub Divisão"></i></a>
+                                    <a href="#" class="link-simples btn_sd_cancelante d-none" id="cancelsd_"
+                                       data-tippy-content="Cancelar a edição de Sub Divisão"><i
+                                            class="fa fa-ban"></i></a>
+
+                                </div>
+                            </div>
+
+
+                            <div class="alert alert-meu text-center pt-3 mt-3" id="no_sd_edit">
+                                Não existem subdivisões cadastrados
+                            </div>
+
+                            <div id="list_sd_for_edit" class="pt-3">
+
+                            </div>
+
+                            <div id="space_for_edit_sd_inputs"></div>
+
+                        </div>
+
+
+                    </div>
+
+                    {{--modal footer--}}
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Alterar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 
@@ -538,6 +768,8 @@
     <script>
         $(function () {
 
+            //start tippy on load
+            tippy('[data-tippy-content]');
 
             //Function to convert rgb color to hex format
             var hexDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
@@ -550,6 +782,8 @@
             function hex(x) {
                 return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
             }
+
+            //----------- Missões de Emprego --------//
 
             // abre o modal de cadastro de novas missões de emprego
             $(document).on('click', '#new_missaoEmprego', function (e) {
@@ -599,32 +833,22 @@
                     },
                     success: function (data) {
 
-                        console.log(data);
-
-
                         let tem_si = '';
                         let quais_si = '';
-
-                        console.log(data.sub_itens.length)
 
                         if (data.sub_itens.length == 0) {
 
                             tem_si = 'd-none';
 
-                            /// montador de li
-
                         } else {
 
                             for (let i = 0; i < data.sub_itens.length; i++) {
-
+                                /// montador de li
                                 quais_si += '<li class="lililist_' + data.id + '" id = "itemsilist_' + data.sub_itens[i].id + '" >' + data.sub_itens[i].sub_item + ' <span class="bola" style = "background-color: ' + data.sub_itens[i].cor + ';" > </span></li>';
 
                             }
 
                         }
-
-                        console.log('quais_si');
-                        console.log(quais_si);
 
                         let space_for_new_card = '<div class="alert alert-dark" id="cardMe_' + data.id + '">' +
                             '<div class="row">' +
@@ -634,9 +858,9 @@
                             '<br>' +
                             '</div>' +
                             '<div class="col-2 text-right">' +
-                            '<a href="#" class="link-simples btn_editante" id="edit_' + data.id + '"><i class="fa fa-edit"></i></a>' +
+                            '<a href="#" class="link-simples btn_editante" data-tippy-content="Editar Missão de  Emprego" id="edit_' + data.id + '"><i class="fa fa-edit"></i></a>' +
                             '<span class="separaicon"></span>' +
-                            '<a href="#" class="link-simples btn_excludente" id="exclude_' + data.id + '"><i class="fa fa-trash"></i></a>' +
+                            '<a href="#" data-tippy-content="Excluir Missão de Emprego" class="link-simples btn_excludente" id="exclude_' + data.id + '"><i class="fa fa-trash"></i></a>' +
                             '</div>' +
                             '</div>' +
                             '<div id="les_si_' + data.id + '" class="' + tem_si + '">' +
@@ -648,12 +872,16 @@
                             '</div>' +
                             '</div>';
 
+
                         $('#h5_principal').after(space_for_new_card);
 
                         // alerta de sucesso
                         toastr.success('A missão de emprego foi cadastrada com sucesso!', 'Sucesso!');
 
                         $('#cadastra_missaoEmprego').modal('hide');
+
+                        //reload tippy
+                        tippy('[data-tippy-content]');
 
                     },
                     error: function (data) {
@@ -691,6 +919,9 @@
                 $('#st_me_' + contador_lebutton).focus();
 
                 contador_lebutton++;
+
+                //reload tippy
+                tippy('[data-tippy-content]');
 
             });
 
@@ -791,8 +1022,6 @@
                     url: '/memanager/' + id,
 
                     success: function (data) {
-
-                        console.log(data);
 
                         $('#space_for_edit_si_inputs').empty();
                         $('#list_si_for_edit').empty();
@@ -995,8 +1224,6 @@
 
                     success: function (data) {
 
-                        console.log(data);
-
                         const le_card = $('#cardMe_' + id);
 
                         le_card.children().children().children().eq(0).text(data.missao);
@@ -1016,7 +1243,6 @@
 
                             }
 
-
                         } else {
 
                             $('#les_si_' + id).addClass('d-none');
@@ -1025,27 +1251,22 @@
 
                         listanova += '</ul>';
 
-                        console.log(listanova);
-
                         $('#list_si_for_index_' + data.id).append(listanova);
 
+                        //reload tippy
+                        tippy('[data-tippy-content]');
 
-                        // hide modal
-
-
-                        $('#altera_me').modal('hide');
                         toastr.success('Missão de emprego alterada com sucesso!', 'Sucesso!');
 
+                        // hide modal
+                        $('#altera_me').modal('hide');
 
                     },
                     error: function (data) {
 
-                        console.log(data);
-
                         toastr.error('Não foi possível alterar a missão de emprego!', 'Falha!');
 
                     }
-
 
                 });
 
@@ -1144,541 +1365,586 @@
 
             //--------------------------------------//
 
+            //---------------Ações------------//
 
-            // inicializa o datatables
-            $('#user_table').DataTable({
-                processing: false,
-                serverSide: false,
-                autoWidth: false,
-                language: {
-                    emptyTable: "Nenhum usuário cadastrado",
-                    info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
-                    infoEmpty: "Não existem registros a serem mostrados",
-                    infoFiltered: "(Filtrado de um total de _MAX_ registros)",
-                    infoPostFix: "",
-                    thousands: ",",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    loadingRecords: "Carregando...",
-                    processing: "Processando...",
-                    search: "Pesquisar:",
-                    zeroRecords: "Nenhum registro encontrado correspondente a busca",
-                    paginate: {
-                        "first": "Primeiro",
-                        "last": "Último",
-                        "next": "Próximo",
-                        "previous": "Anterior"
-                    },
-                    aria: {
-                        "sortAscending": ": Ative para organizar de forma crescente.",
-                        "sortDescending": ": Ative para organizar de forma decrescente."
-                    }
-                },
-                pageLength: 50,
+            // abre o modal de cadastro de novas missões de emprego
+            $(document).on('click', '#new_acao', function (e) {
 
-                ajax: "/allusers/todos",
-                type: 'GET',
-                rowId: function (a) {
-                    return 'user_' + a.id;
-                },
-                columns: [
-                    {data: "id", name: 'id', 'visible': false},
-                    {data: "nome"},
-                    {data: "user_tipo.tipo", className: 'text-center'},
-                    {data: "om.sigla", className: 'text-center'},
-                    {
-                        data: "om.podeVerTudo", className: 'text-center', orderable: false,
-                        render: function (data, type, row) {
+                e.preventDefault();
 
-                            if (data === 1) {
+                $('#form_acao').trigger('reset');
 
-                                return '<i id="verGeral_' + row.id + '" data-tippy-content="Pode ver tudo" class="fa fa-eye"></i>';
+                $('.counter_input_sd').each(function () {
 
-                            } else {
-                                return '<i id="verGeral_' + row.id + '" data-tippy-content="Não pode ver tudo" class="fa fa-eye-slash"></i>';
-                            }
+                    $(this).remove();
 
-
-                        }
-                    },
-                    {data: "status", className: "text-center", name: "status"},
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        className: 'text-center',
-                        render: function (data, type, row) {
-
-                            let classe_button = '';
-                            let classe_icon = '';
-                            let text_tippy = '';
-
-                            if (row.status == 'Ativo') {
-
-                                classe_button = 'btn-outline-danger';
-                                classe_icon = 'fa-ban';
-                                text_tippy = 'Desativar Pessoa';
-
-                            } else if (row.status == 'Inativo') {
-                                classe_button = 'btn-outline-primary';
-                                classe_icon = 'fa-check-circle';
-                                text_tippy = 'Ativar Pessoa';
-                            } else if (row.status == 'Resetado') {
-                                classe_button = 'btn-outline-dark';
-                                classe_icon = 'fa-spinner';
-                                text_tippy = 'Usuário resetado aguardando acesso';
-                            }
-
-                            return '<button id="show_' + row.id + '" class="btn btn-sm btn-success btn_show" title="Detalhes sobre a pessoa" data-tippy-content="Exibe detalhes sobre a pessoa">' +
-                                '<i class="fa fa-search"></i>' +
-                                '</button>' +
-                                '<span class="separaicon"></span>' +
-                                '<button id="editar_' + row.id + '" class="btn btn-sm btn-warning btn_edit" title="Alterar Informações" data-tippy-content="Alterar Informações">' +
-                                '<i class="fa fa-edit"></i>' +
-                                '</button>' +
-                                '<span class="separaicon"></span>' +
-                                '<button id="resetar_' + row.id + '" class="btn btn-sm btn-secondary btn_reset" title="Resetar Usuário" data-tippy-content="Resetar senha de usuário">' +
-                                '<i class="fa fa-lock"></i>' +
-                                '</button>' +
-                                '<span class="separaicon"></span>' +
-                                '<button id="desativa_' + row.id + '" class="btn btn-sm ' + classe_button + ' btn_desativa" title="Desativar pessoa" data-tippy-content="' + text_tippy + '">' +
-                                '<i id="iconStatus_' + row.id + '" class="fa ' + classe_icon + '"></i>' +
-                                '</button>' +
-                                '<span class="separaicon"></span>' +
-                                '<button id="excluir_' + row.id + '" class="btn btn-sm btn-danger btn_exclude" title="Excluir pessoa" data-tippy-content="Excluir Pessoa">' +
-                                '<i class="fa fa-trash"></i>' +
-                                '</button>';
-
-                        }
-                    },
-                ],
-                order: [[0, 'desc']]
-            });
-
-            // monta as tabelas filtradas por tipos
-            $(document).on('click', '.mytabsselect', function () {
-
-                // destroi a instancia
-                var leTable = $('#user_table').DataTable();
-                leTable.destroy();
-
-                let what_type = $(this).attr('id').split('-')[1];
-
-                console.log(what_type);
-
-                $('#user_table').DataTable({
-                    processing: false,
-                    serverSide: false,
-                    autoWidth: false,
-                    language: {
-                        emptyTable: "Nenhum usuário cadastrado",
-                        info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
-                        infoEmpty: "Não existem registros a serem mostrados",
-                        infoFiltered: "(Filtrado de um total de _MAX_ registros)",
-                        infoPostFix: "",
-                        thousands: ",",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        loadingRecords: "Carregando...",
-                        processing: "Processando...",
-                        search: "Pesquisar:",
-                        zeroRecords: "Nenhum registro encontrado correspondente a busca",
-                        paginate: {
-                            "first": "Primeiro",
-                            "last": "Último",
-                            "next": "Próximo",
-                            "previous": "Anterior"
-                        },
-                        aria: {
-                            "sortAscending": ": Ative para organizar de forma crescente.",
-                            "sortDescending": ": Ative para organizar de forma decrescente."
-                        }
-                    },
-                    pageLength: 50,
-
-                    ajax: "/allusers/" + what_type,
-                    type: 'GET',
-                    rowId: function (a) {
-                        return 'user_' + a.id;
-                    },
-                    columns: [
-                        {data: "id", name: 'id', 'visible': false},
-                        {data: "nome"},
-                        {data: "user_tipo.tipo", className: 'text-center'},
-                        {data: "om.sigla", className: 'text-center'},
-                        {
-                            data: "om.podeVerTudo", className: 'text-center', orderable: false,
-                            render: function (data, type, row) {
-
-                                if (data === 1) {
-
-                                    return '<i id="verGeral_' + row.id + '" data-tippy-content="Pode ver tudo" class="fa fa-eye"></i>';
-
-                                } else {
-                                    return '<i id="verGeral_' + row.id + '" data-tippy-content="Não pode ver tudo" class="fa fa-eye-slash"></i>';
-                                }
-
-
-                            }
-                        },
-                        {data: "status", className: "text-center", name: "status"},
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            className: 'text-center',
-                            render: function (data, type, row) {
-
-                                let classe_button = '';
-                                let classe_icon = '';
-                                let text_tippy = '';
-
-                                if (row.status == 'Ativo') {
-
-                                    classe_button = 'btn-outline-danger';
-                                    classe_icon = 'fa-ban';
-                                    text_tippy = 'Desativar Pessoa';
-
-                                } else if (row.status == 'Inativo') {
-                                    classe_button = 'btn-outline-primary';
-                                    classe_icon = 'fa-check-circle';
-                                    text_tippy = 'Ativar Pessoa';
-                                } else if (row.status == 'Resetado') {
-                                    classe_button = 'btn-outline-dark';
-                                    classe_icon = 'fa-spinner';
-                                    text_tippy = 'Usuário resetado aguardando acesso';
-                                }
-
-                                return '<button id="show_' + row.id + '" class="btn btn-sm btn-success btn_show" title="Detalhes sobre a pessoa" data-tippy-content="Exibe detalhes sobre a pessoa">' +
-                                    '<i class="fa fa-search"></i>' +
-                                    '</button>' +
-                                    '<span class="separaicon"></span>' +
-                                    '<button id="editar_' + row.id + '" class="btn btn-sm btn-warning btn_edit" title="Alterar Informações" data-tippy-content="Alterar Informações">' +
-                                    '<i class="fa fa-edit"></i>' +
-                                    '</button>' +
-                                    '<span class="separaicon"></span>' +
-                                    '<button id="resetar_' + row.id + '" class="btn btn-sm btn-secondary btn_reset" title="Resetar Usuário" data-tippy-content="Resetar senha de usuário">' +
-                                    '<i class="fa fa-lock"></i>' +
-                                    '</button>' +
-                                    '<span class="separaicon"></span>' +
-                                    '<button id="desativa_' + row.id + '" class="btn btn-sm ' + classe_button + ' btn_desativa" title="Desativar pessoa" data-tippy-content="' + text_tippy + '">' +
-                                    '<i id="iconStatus_' + row.id + '" class="fa ' + classe_icon + '"></i>' +
-                                    '</button>' +
-                                    '<span class="separaicon"></span>' +
-                                    '<button id="excluir_' + row.id + '" class="btn btn-sm btn-danger btn_exclude" title="Excluir pessoa" data-tippy-content="Excluir Pessoa">' +
-                                    '<i class="fa fa-trash"></i>' +
-                                    '</button>';
-
-                            }
-                        },
-                    ],
-                    order: [[0, 'desc']]
                 });
 
-                $('#user_table').on('draw.dt', function () {
-                    tippy('[data-tippy-content]');
-                });
+                $('#base_acao_space').addClass('d-none');
+
+                // show modal
+                $('#cadastra_acao').modal('show');
+
+                // manda o focus para o input
+                $('#cadastra_acao').on('shown.bs.modal', function () {
+                    $('#acao_nome').focus();
+
+                })
 
             });
 
-            $('#user_table').on('draw.dt', function () {
+            // botao que adiciona divisoes
+            var contador_lebuttonaction = 0;
+            $(document).on('click', '#le_sd_button', function (e) {
+
+                e.preventDefault();
+
+                $('#base_sd_space').removeClass('d-none');
+
+                var teste = $('#base_sd_inputs_space').clone();
+
+                teste.attr('id', 'sd_inputs_' + contador_lebuttonaction)
+                    .removeClass('d-none').addClass('counter_input_sd')
+                    .find('label')
+                    .first()
+                    .attr('for', 'sd_action_' + contador_lebuttonaction)
+                    .next()
+                    .attr('id', 'sd_action_' + contador_lebuttonaction).attr('required', true).addClass('le_array_sd')
+                    .attr('name', 'sd_action[]').parent().next()
+                    .find('button').attr('id', 'btnsdacao_' + contador_lebuttonaction);
+
+                $('#base_sd_inputs_space').after(teste);
+
+                $('#sd_action_' + contador_lebuttonaction).focus();
+
+                contador_lebuttonaction++;
+
+                //reload tippy
                 tippy('[data-tippy-content]');
+
             });
 
-            // monta a tabela de seriais
-            $(document).on('click', '#pills-serial-tab', function () {
+            // exclui sub divisoes durante a tela de criação de acoes
+            $(document).on('click', '.button_exclude_sd', function (e) {
 
-                // inicializa o datatables
-                var leSerial = $('#serial_table').DataTable();
-                leSerial.destroy();
+                e.preventDefault();
 
-                $('#serial_table').DataTable({
-                    processing: false,
-                    serverSide: false,
-                    autoWidth: false,
-                    language: {
-                        emptyTable: "Nenhum serial cadastrado",
-                        info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
-                        infoEmpty: "Não existem registros a serem mostrados",
-                        infoFiltered: "(Filtrado de um total de _MAX_ registros)",
-                        infoPostFix: "",
-                        thousands: ",",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        loadingRecords: "Carregando...",
-                        processing: "Processando...",
-                        search: "Pesquisar:",
-                        zeroRecords: "Nenhum registro encontrado correspondente a busca",
-                        paginate: {
-                            "first": "Primeiro",
-                            "last": "Último",
-                            "next": "Próximo",
-                            "previous": "Anterior"
-                        },
-                        aria: {
-                            "sortAscending": ": Ative para organizar de forma crescente.",
-                            "sortDescending": ": Ative para organizar de forma decrescente."
+                let id = $(this).attr('id').split('_')[1];
+
+                $('#sd_inputs_' + id).remove();
+                $('#sd_edit_inputs_' + id).remove();
+
+                var le_inputs_number_sd = $('.counter_input_sd').length;
+
+
+                if (le_inputs_number_sd == 0) {
+
+                    $('#base_sd_space').addClass('d-none');
+
+
+                    if ($('#list_sd_for_edit ul li').length == 0) {
+
+                        $('#no_sd_edit').removeClass('d-none');
+
+                    }
+
+                }
+
+
+            });
+
+            // cria uma nova Ação
+            $(document).on('submit', '#form_acao', function (e) {
+                e.preventDefault(e);
+                let le_sd_itens = [''];
+                if ($('.le_array_sd').length > 0) {
+                    le_sd_itens = [];
+                    for (let i = 0; i < $('.le_array_sd').length; i++) {
+                        le_sd_itens.push($('.le_array_sd').eq(i).val());
+                    }
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/acaomanager',
+                    data: {
+                        _method: 'POST',
+                        _token: $('meta[name=csrf-token]').attr('content'),
+                        acao: $('#acao_nome').val(),
+                        subdivisao: le_sd_itens
+                    },
+                    success: function (data) {
+
+                        let tem_sd = '';
+                        let quais_sd = '';
+
+                        if (data.sub_divisao.length == 0) {
+
+                            tem_sd = 'd-none';
+
+                        } else {
+
+                            for (let i = 0; i < data.sub_divisao.length; i++) {
+                                /// montador de li
+                                quais_sd += '<li class="lililistsd_' + data.id + '" id = "itemsilistsd_' + data.sub_divisao[i].id + '" >' + data.sub_divisao[i].sub_divisao + ' <span class="bola" style = "background-color: ' + data.sub_divisao[i].cor + ';" > </span></li>';
+
+                            }
+
                         }
+
+                        let space_for_new_card_acao = '<div class="alert alert-dark" id="cardAction_' + data.id + '">' +
+                            '<div class="row">' +
+                            '<div class="col-10">' +
+                            '<span class="audiowide"> ' + data.acao + ' </span>' +
+                            '<span class="corbox-normal bordas" style="background-color: ' + data.cor + ';"></span>' +
+                            '<br>' +
+                            '</div>' +
+                            '<div class="col-2 text-right">' +
+                            '<a href="#" class="link-simples btn_acao_editante" data-tippy-content="Editar Ação" id="editAction_' + data.id + '"><i class="fa fa-edit"></i></a>' +
+                            '<span class="separaicon"></span>' +
+                            '<a href="#" data-tippy-content="Excluir Missão de Emprego" class="link-simples btn_acao_excludente" id="excludeAction_' + data.id + '"><i class="fa fa-trash"></i></a>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div id="les_sd_' + data.id + '" class="' + tem_sd + '">' +
+                            '<p> Sub Divisões </p>' +
+                            '<div id = "list_sd_for_index_' + data.id + '">' +
+                            '<ul>' + quais_sd +
+                            '</ul>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+
+                        $('#h5_principal_acao').after(space_for_new_card_acao);
+
+                        // alerta de sucesso
+                        toastr.success('A Ação foi cadastrada com sucesso!', 'Sucesso!');
+
+                        $('#cadastra_acao').modal('hide');
+
+                        //reload tippy
+                        tippy('[data-tippy-content]');
+
                     },
-                    pageLength: 50,
+                    error: function (data) {
 
-                    ajax: "/alltoken/serialtodos",
-                    type: 'GET',
-                    rowId: function (a) {
-                        return 'serial_' + a.id;
-                    },
-                    columns: [
-                        {data: "id", name: 'id', 'visible': false},
-                        {data: "token", className: 'text-center'},
-                        {data: "om.sigla"},
-                        {data: "type", className: 'text-center'},
-                        {data: "status", className: "text-center", name: "status"},
-                        {data: "reference", className: 'text-center'},
-                        {
-                            data: "user.nome", className: "text-center",
-                            render: function (data, type, row) {
+                        toastr.error('Não foi possível cadastrar a Ação!', 'Falha!');
 
-                                if (row.status == 'Utilizado') {
+                    }
 
-                                    return row.user.posto_grad + ' ' + row.user.nome_guerra + ' ';
-
-                                } else {
-
-                                    return '-';
-                                }
-
-
-                            }
-                        },
-                        {
-                            data: "gerador_tokens.nome", className: "text-center",
-                            render: function (data, type, row) {
-                                return row.gerador_tokens.posto_grad + ' ' + row.gerador_tokens.nome_guerra + ' ';
-                            }
-                        },
-
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            className: 'h-100 text-center justify-content-center align-items-center align-middle',
-                            render: function (data, type, row) {
-
-                                if (row.status == 'Aguardando Uso') {
-
-
-                                    return '<button id="excluirToken_' + row.id + '" class="btn btn-sm btn-danger btn_exclude_token" title="Excluir Chave" data-tippy-content="Excluir Chave">' +
-                                        '<i class="fa fa-trash"></i>' +
-                                        '</button>';
-
-                                } else if (row.status == 'Expirado') {
-
-                                    return '<button id="renovarToken_' + row.id + '" class="btn btn-sm btn-warning btn_renova_token" title="Renovar Chave" data-tippy-content="Renovar Chave">' +
-                                        '<i class="fa fa-redo"></i>' +
-                                        '</button>' +
-                                        '<span class="separaicon"></span>' +
-                                        '<button id="excluirToken_' + row.id + '" class="btn btn-sm btn-danger btn_exclude_token" title="Excluir Chave" data-tippy-content="Excluir Chave">' +
-                                        '<i class="fa fa-trash"></i>' +
-                                        '</button>';
-
-                                } else {
-
-                                    return '-';
-
-                                }
-
-                            }
-
-                        },
-
-                    ],
-                    order: [[0, 'desc']]
                 });
 
             });
 
-            // submete a edição de um usuário já cadastrado
-            $(document).on('submit', '#form_alterar_user', function (e) {
+            // FALTA TESTAR
 
-                e.preventDefault(e);
+            // remove ação
+            $(document).on('click', '.btn_acao_excludente', function (e) {
 
-                let le_id_edit = $('#id_user_edit').val();
+                e.preventDefault();
+
+                var id = $(this).attr('id').split('_')[1];
+
+                $.confirm({
+                    title: 'Você esta certo disso?',
+                    content: 'A exclusão de uma ação é altamente prejudicial ao sistema! Tenha certeza absoluta do que está fazendo, pois isso vai gerar um enorme impacto em todas as missões e relatórios existentes. Todoas as Sub Divisões também serão removidas.',
+                    buttons: {
+                        Confirmar: {
+                            action: function () {
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/acaomanager/' + id,
+
+                                    data: {
+                                        _method: 'DELETE',
+                                    },
+                                    success: function (data) {
+
+                                        $('#cardAction_' + id).remove();
+
+                                        // alerta de sucesso
+                                        toastr.success('A Ação foi removida com sucesso.', 'Sucesso!');
+
+                                    },
+                                    error: function () {
+
+                                        // alert de erro
+                                        toastr.error('Não foi possível excluir a Ação!', 'Falha!');
+
+                                    }
+
+                                });
+                            },
+                            btnClass: 'btn-outline-dark'
+                        },
+                        Cancelar: {
+                            btnClass: 'btn-outline-danger'
+                        },
+                    },
+                    columnClass: 'col-md-6'
+                });
+
+
+            });
+
+            // abre o modal de editar acao
+            $(document).on('click', '.btn_acao_editante', function (e) {
+
+                e.preventDefault();
+
+                var id = $(this).attr('id').split('_')[1];
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/acaomanager/' + id,
+
+                    success: function (data) {
+
+                        $('#space_for_edit_sd_inputs').empty();
+                        $('#list_sd_for_edit').empty();
+
+                        $('.the_acao').text(data.acao);
+                        $('#acao_edit').val(data.acao);
+                        $('#cor_acao_edit').val(data.cor);
+                        $('#acao_edit_id').val(data.id);
+
+                        $('.btn_sd_editante').attr('id', 'editsd_' + data.id);
+                        $('.btn_sd_cancelante').attr('id', 'cancelsd_' + data.id);
+
+
+                        if (data.sub_divisao.length > 0) {
+
+                            $('#no_sd_edit').addClass('d-none');
+
+                            let my_list_sd = '<ul>';
+
+                            for (let i = 0; i < data.sub_divisao.length; i++) {
+
+                                my_list_sd += `<li class="lilieditlistsd_${data.id}" id="itemsieditlisd_${data.sub_divisao[i].id}">${data.sub_divisao[i].sub_divisao} <span class="bola" style="background-color: ${data.sub_divisao[i].cor};"></li>`;
+
+                            }
+
+                            my_list_sd += '</ul>';
+
+                            $('#list_sd_for_edit').append(my_list_sd);
+
+                        } else {
+
+                            $('#no_sd_edit').removeClass('d-none')
+
+                        }
+
+                        $('.btn_sd_editante').removeClass('d-none');
+                        $('.btn_sd_cancelante').addClass('d-none');
+
+                        // show modal
+                        $('#altera_acao').modal('show');
+                    },
+                    error: function () {
+
+                        // alert de erro
+                        toastr.error('Não foi possível obter as informações!', 'Falha!');
+
+                    }
+
+                });
+
+            });
+
+            var le_add_edit_sd = 0;
+            // adiciona novos inputs de sd na tela de edição
+            $(document).on('click', '#add_new_sd_edit', function (e) {
+
+                e.preventDefault();
+
+                $('#no_sd_edit').addClass('d-none');
+
+                var teste = $('#base_sd_inputs_space').clone();
+
+                teste.attr('id', 'sd_edit_inputs_' + le_add_edit_sd)
+                    .removeClass('d-none').addClass('counter_input_sd')
+                    .find('label')
+                    .first()
+                    .attr('for', 'sd_acao_edit_' + le_add_edit_sd)
+                    .next()
+                    .attr('id', 'sd_acao_edit_' + le_add_edit_sd).attr('required', true).addClass('le_array_sd_edit')
+                    .attr('name', 'sd_acao_edit[]').parent().next()
+                    .find('button').attr('id', 'btnsdacaoedit_' + le_add_edit_sd);
+
+
+                $('#space_for_edit_sd_inputs').append(teste);
+
+                $('#sd_acao_edit_' + le_add_edit_sd).focus();
+
+                le_add_edit_sd++;
+
+            });
+
+            // guarda as infortmações iniciais para caso cancele, volta ao normal (acao)
+            var leinfoinisd = '';
+
+            //ajusta os sd para editar
+            $(document).on('click', '.btn_sd_editante', function (e) {
+
+                e.preventDefault();
+
+                let id_acao = $(this).attr('id').split('_')[1];
+
+                var modularinputssd = '';
+
+                $('.lilieditlistsd_' + id_acao).each(function () {
+
+                    let tttext = $(this).text();
+                    let ideditind = $(this).attr('id').split('_')[1];
+                    let coloreditind = rgb2hex($(this).children('span').first().css('background-color'));
+
+                    leinfoinisd += `<!--ref --> <li class="lilieditlistsd_${id_acao}" id="itemsdeditli_${ideditind}">${tttext} <span class="bola" style="background-color: ${coloreditind};"></li>`;
+
+                    modularinputssd += '<div class="row" id="inpputttsd_' + ideditind + '">' +
+                    '<div class="col-9">' +
+                    '<div class="form-group">' +
+                    '<input type="text" class="form-control le_olds_sd_name" id="acao_sd_edit_input_' + ideditind + '" value="' + tttext + '">' +
+                    '<input type="hidden" class="le_olds_sd_id" id="acao_sd_edit_id_input_' + ideditind + '" value="' + ideditind + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<input type="color" class="form-control le_olds_sd_color" id="cor_acao_edit_input_' + ideditind + '" value="' + coloreditind + '">' +
+                    '</div>' +
+                    '<div class="col-1">' +
+                    '<button data-id="'+id_acao+'" type="button" class="btn btn-danger remove_sd_edit_window" id="removemesdeditinput_' + ideditind + '"><i class="fa fa-trash"></i></button>' +
+                    '</div>' +
+                    '</div>';
+
+                    });
+
+                $('#list_sd_for_edit').empty();
+
+                $('#list_sd_for_edit').append(modularinputssd);
+
+                $('.btn_sd_editante').addClass('d-none');
+                $('.btn_sd_cancelante').removeClass('d-none');
+
+            });
+
+            // cancela a edição de itens sd já cadastrados
+            $(document).on('click', '.btn_sd_cancelante', function (e) {
+
+                e.preventDefault();
+
+                $('#list_sd_for_edit').empty();
+
+                $('#list_sd_for_edit').append('<ul>' + leinfoinisisd + '</ul>');
+
+                $('.btn_sd_editante').removeClass('d-none');
+                $('.btn_sd_cancelante').addClass('d-none');
+
+                leinfoinisisd = '';
+
+            });
+
+            // remove um sd já existente na janela de edição
+            $(document).on('click', '.remove_sd_edit_window', function (e) {
+
+                e.preventDefault();
+                let id = $(this).attr('id').split('_')[1];
+                let id_me = $(this).data('id');
+
+                $.confirm({
+                    title: 'Você esta certo disso?',
+                    content: 'A ação de excluir uma sub divisão de ação é altamente prejudicial ao sistema! Tenha certeza absoluta do que está fazendo, pois isso vai gerar um enorme impacto em todas as missões e relatórios existentes.',
+                    buttons: {
+                        Confirmar: {
+                            action: function () {
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/sdacaomanager/' + id,
+
+                                    data: {
+                                        _method: 'DELETE',
+                                    },
+                                    success: function (data) {
+
+                                        // remove o input
+                                        $('#inpputttsd_' + id).remove();
+
+                                        // remove da lista na tela principal
+                                        $('#itemsdlist_' + id).remove();
+
+                                        // arrumando o cancel
+                                        var ajustesd = leinfoinisisd.split('<!--ref -->');
+
+                                        const coisasd = 'id="itemsdeditli_' + id + '"';
+
+                                        for (let i = 0; i < ajustesd.length; i++) {
+
+                                            if (ajustesd[i].indexOf(coisasd) != -1) {
+
+                                                ajustesd.splice(i, 1);
+
+                                            }
+
+                                        }
+
+                                        leinfoinisisd = '';
+
+                                        // reajusta o cancel conforme a nova lista
+                                        for (let i = 0; i < ajustesd.length; i++) {
+
+                                            leinfoinisisd += `${ajustesd[i]}`;
+
+                                        }
+
+                                        if ($('#list_sd_for_edit ul li').length == 0 && $('#list_sd_for_edit .row').length == 0) {
+
+                                            $('#no_sd_edit').removeClass('d-none');
+
+                                        }
+
+                                        // alerta de sucesso
+                                        toastr.success('A sub divisão da ação foi removido com sucesso.', 'Sucesso!');
+
+                                    },
+                                    error: function () {
+
+                                        // alert de erro
+                                        toastr.error('Não foi possível excluir a sub divisão da ação!', 'Falha!');
+
+                                    }
+
+                                });
+                            },
+                            btnClass: 'btn-outline-dark'
+                        },
+                        Cancelar: {
+                            btnClass: 'btn-outline-danger'
+                        },
+                    },
+                    columnClass: 'col-md-6'
+                });
+
+
+            });
+
+            //submete alterações acao
+            $(document).on('submit', '#form_alterar_acao', function (e) {
+
+                e.preventDefault();
+
+                let id = $('#acao_edit_id').val();
+                let acao = $('#acao_edit').val();
+                let cor = $('#cor_acao_edit').val();
+
+                let array_novas_sd = [''];
+                let array_antigas_sd_nome_editadas = [''];
+                let array_antigas_sd_cor_editadas = [''];
+                let array_antigas_sd_id_editadas = [''];
+
+                if ($('.le_array_sd_edit').length > 0) {
+
+                    array_novas_sd = [];
+
+                    for (let i = 0; i < $('.le_array_sd_edit').length; i++) {
+
+                        array_novas_sd.push($('.le_array_sd_edit').eq(i).val());
+
+                    }
+
+                }
+
+                if ($('.le_olds_sd_name').length > 0) {
+
+                    array_antigas_sd_nome_editadas = [];
+                    array_antigas_sd_cor_editadas = [];
+                    array_antigas_sd_id_editadas = [];
+
+                    for (let i = 0; i < $('.le_olds_sd_name').length; i++) {
+
+                        array_antigas_sd_nome_editadas.push($('.le_olds_sd_name').eq(i).val());
+                        array_antigas_sd_cor_editadas.push($('.le_olds_sd_color').eq(i).val());
+                        array_antigas_sd_id_editadas.push($('.le_olds_sd_id').eq(i).val());
+
+                    }
+                }
 
                 $.ajax({
                     type: 'POST',
-                    url: '/admin/usermanager/' + le_id_edit,
+                    url: '/acaomanager/' + id,
                     data: {
                         _method: 'PUT',
                         _token: $('meta[name=csrf-token]').attr('content'),
-                        om_id: $('#om_user_edit').val(),
-                        type: $('#type_user_edit').val(),
-                        nome: $('#nome_user_edit').val(),
-                        nome_guerra: $('#nome_guerra_user_edit').val(),
-                        posto_grad: $('#posto_grad_user_edit').val(),
-                        tel_contato: $('#tel_user_edit').val(),
-                        email: $('#email_user_edit').val(),
+                        acao: acao,
+                        cor: cor,
+                        novas_sd: array_novas_sd,
+                        sd_editada: array_antigas_sd_nome_editadas,
+                        sd_cor_editada: array_antigas_sd_cor_editadas,
+                        sd_id_editada: array_antigas_sd_id_editadas,
 
                     },
 
                     success: function (data) {
 
+                        const le_card_sd = $('#cardAction_' + id);
 
-                        var $userTable = $('#user_table').dataTable();
+                        le_card_sd.children().children().children().eq(0).text(data.acao);
+                        le_card_sd.children().children().children().eq(1).css('background-color', data.cor);
 
-                        // The second parameter will be the row, and the third is the column.
-                        $userTable.fnUpdate(data.nome, '#user_' + data.id, 1);
-                        $userTable.fnUpdate(data.user_tipo.tipo, '#user_' + data.id, 2);
-                        $userTable.fnUpdate(data.om.sigla, '#user_' + data.id, 3);
+                        $('#list_sd_for_index_' + data.id).empty();
 
-                        if (data.om.podeVerTudo) {
+                        let listanovasd = '<ul>';
 
-                            $('#verGeral_' + data.id).removeClass('fa-eye-slash').addClass('fa-eye');
+                        if (data.sub_divisao.length > 0) {
+
+                            $('#les_sd_' + id).removeClass('d-none');
+
+                            for (let i = 0; i < data.sub_divisao.length; i++) {
+
+                                listanovasd += '<li class="lililistsd_' + data.id + '" id="itemsdlist_' + data.sub_divisao[i].id + '">' + data.sub_divisao[i].sub_divisao + ' <span class="bola" style="background-color: ' + data.sub_divisao[i].cor + ';"></span></li>';
+
+                            }
 
                         } else {
 
-                            $('#verGeral_' + data.id).removeClass('fa-eye').addClass('fa-eye-slash');
+                            $('#les_sd_' + id).addClass('d-none');
 
                         }
 
-                        $('#altera_pessoa').modal('hide');
+                        listanovasd += '</ul>';
 
+                        $('#list_sd_for_index_' + data.id).append(listanovasd);
 
-                        // alerta de sucesso
-                        toastr.success('O usuário foi alterado com sucesso!', 'Sucesso!');
+                        //reload tippy
+                        tippy('[data-tippy-content]');
 
+                        toastr.success('Ação alterada com sucesso!', 'Sucesso!');
+
+                        // hide modal
+                        $('#altera_acao').modal('hide');
 
                     },
                     error: function (data) {
 
-                        console.log(data);
-
-                        toastr.error('Não foi possível alterar o usuário!', 'Falha!');
+                        toastr.error('Não foi possível alterar a Ação!', 'Falha!');
 
                     }
 
-
                 });
 
             });
 
 
-            // filtra os seriais por tipo de status
-            $(document).on('click', '.serialselect', function (e) {
-
-                e.preventDefault();
-
-                // destroi a instancia
-                var leTable = $('#serial_table').DataTable();
-                leTable.destroy();
-
-                let what_type = $(this).attr('id').split('-')[1];
-
-                console.log(what_type);
-
-                $('#serial_table').DataTable({
-                    processing: false,
-                    serverSide: false,
-                    autoWidth: false,
-                    language: {
-                        emptyTable: "Nenhum serial cadastrado",
-                        info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
-                        infoEmpty: "Não existem registros a serem mostrados",
-                        infoFiltered: "(Filtrado de um total de _MAX_ registros)",
-                        infoPostFix: "",
-                        thousands: ",",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        loadingRecords: "Carregando...",
-                        processing: "Processando...",
-                        search: "Pesquisar:",
-                        zeroRecords: "Nenhum registro encontrado correspondente a busca",
-                        paginate: {
-                            "first": "Primeiro",
-                            "last": "Último",
-                            "next": "Próximo",
-                            "previous": "Anterior"
-                        },
-                        aria: {
-                            "sortAscending": ": Ative para organizar de forma crescente.",
-                            "sortDescending": ": Ative para organizar de forma decrescente."
-                        }
-                    },
-                    pageLength: 50,
-
-                    ajax: "/alltoken/" + what_type,
-                    type: 'GET',
-                    rowId: function (a) {
-                        return 'serial_' + a.id;
-                    },
-                    columns: [
-                        {data: "id", name: 'id', 'visible': false},
-                        {data: "token", className: 'text-center'},
-                        {data: "om.sigla"},
-                        {data: "type", className: 'text-center'},
-                        {data: "status", className: "text-center", name: "status"},
-                        {data: "reference", className: 'text-center'},
-                        {
-                            data: "user.nome", className: "text-center",
-                            render: function (data, type, row) {
-
-                                if (row.status == 'Utilizado') {
-
-                                    return row.user.posto_grad + ' ' + row.user.nome_guerra + ' ';
-
-                                } else {
-
-                                    return '-';
-                                }
-
-
-                            }
-                        },
-                        {
-                            data: "gerador_tokens.nome", className: "text-center",
-                            render: function (data, type, row) {
-                                return row.gerador_tokens.posto_grad + ' ' + row.gerador_tokens.nome_guerra + ' ';
-                            }
-                        },
-
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            className: 'h-100 text-center justify-content-center align-items-center align-middle',
-                            render: function (data, type, row) {
-
-                                if (row.status == 'Aguardando Uso') {
-
-
-                                    return '<button id="excluirToken_' + row.id + '" class="btn btn-sm btn-danger btn_exclude_token" title="Excluir Chave" data-tippy-content="Excluir Chave">' +
-                                        '<i class="fa fa-trash"></i>' +
-                                        '</button>';
-
-                                } else if (row.status == 'Expirado') {
-
-                                    return '<button id="renovarToken_' + row.id + '" class="btn btn-sm btn-warning btn_renova_token" title="Renovar Chave" data-tippy-content="Renovar Chave">' +
-                                        '<i class="fa fa-redo"></i>' +
-                                        '</button>' +
-                                        '<span class="separaicon"></span>' +
-                                        '<button id="excluirToken_' + row.id + '" class="btn btn-sm btn-danger btn_exclude_token" title="Excluir Chave" data-tippy-content="Excluir Chave">' +
-                                        '<i class="fa fa-trash"></i>' +
-                                        '</button>';
-
-                                } else {
-
-                                    return '-';
-
-                                }
-
-                            }
-
-                        },
-
-                    ],
-                    order: [[0, 'desc']]
-                });
-
-                $('#serial_table').on('draw.dt', function () {
-                    tippy('[data-tippy-content]');
-                });
-
-            });
 
 
         });
