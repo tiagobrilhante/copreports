@@ -206,7 +206,55 @@
                 {{--espaço para resultados--}}
                 <div class="tab-pane " id="pills-result" role="tabpanel" aria-labelledby="pills-result-tab">
 
-                    Resultados
+                    <div class="alert alert-meu">
+
+                        <h5 id="h5_principal_acao">Resultados Possíveis
+
+                        </h5>
+
+                        <div class="alert alert-dark">
+
+                            <div class="row">
+
+                                <div class="col">
+                                    <span class="audiowide">Apreensões</span><br>
+
+                                </div>
+
+                                <div class="col text-right">
+
+                                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                            id="button_altera_cat_itens_apreensao"><i class="fa fa-edit"></i> Editar
+                                        Categorias e Itens
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            Categorias de itens possíveis e itens:
+
+                            {{--espaçpo para listar--}}
+                            <div id="lista_cat_apreensoes" class="row">
+                            </div>
+
+                            {{--atributos de apreensões--}}
+                            <div class="alert alert-primary">
+                                Atributos de apreensões
+
+                                <ul>
+                                    <li> Categoria / item apreendido</li>
+                                    <li> Quantidade apreendida (com base na forma de medir do item)</li>
+                                    <li> Data da Apreensão</li>
+                                    <li> Om / Su que apreendeu</li>
+                                    <li> Observações (SFC)</li>
+                                    <li> Cor (Impacta apenas na geração de gráficos)</li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -405,7 +453,8 @@
                                         <input type="hidden" id="me_edit_id">
 
 
-                                        <small id="me_edit_help" class="form-text text-muted">Altere a missão de emprego se
+                                        <small id="me_edit_help" class="form-text text-muted">Altere a missão de emprego
+                                            se
                                             desejar.</small>
 
                                     </div>
@@ -562,7 +611,8 @@
                                     <input type="text" class="form-control" id="acao_nome"
                                            aria-describedby="acao_nome_help" required>
 
-                                    <small id="acao_nome_help" class="form-text text-muted">Insira a ação desejada.</small>
+                                    <small id="acao_nome_help" class="form-text text-muted">Insira a ação
+                                        desejada.</small>
 
                                 </div>
 
@@ -695,7 +745,8 @@
                                     <input type="color" class="form-control" id="cor_acao_edit"
                                            aria-describedby="cor_acao_edit_help">
 
-                                    <small id="cor_acao_edit_help" class="form-text text-muted">Altere a cor da ação se desejar.</small>
+                                    <small id="cor_acao_edit_help" class="form-text text-muted">Altere a cor da ação se
+                                        desejar.</small>
 
                                 </div>
 
@@ -711,7 +762,8 @@
                                     <span class="audiowide">Sub Divisões</span>
 
                                     <button type="button" class="ml-3 btn btn-outline-primary btn-xsm"
-                                            id="add_new_sd_edit"><i class="fa fa-plus-circle"></i> Adicionar novas sub divisões
+                                            id="add_new_sd_edit"><i class="fa fa-plus-circle"></i> Adicionar novas sub
+                                        divisões
                                     </button>
 
                                 </div>
@@ -757,6 +809,52 @@
 
     </div>
 
+    {{-----------Apreensões----------------}}
+
+
+    {{--modal de alterar categorias e itens de apreensões--}}
+    <div class="modal fade" id="modal_altera_cat_itens_apreensao" tabindex="-1" role="dialog"
+         aria-labelledby="altera_cat_itens_apreensaoLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-xl" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Alteração de Categorias e itens de Apreensões</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="form_alterar_cat_item_apreensao">
+
+                    {{--modal body--}}
+                    <div class="modal-body">
+
+
+                        <div id="lista_cat_apreensoes_edita" class="row">
+
+                        </div>
+
+
+                    </div>
+
+                    {{--modal footer--}}
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Alterar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 
@@ -1535,8 +1633,6 @@
 
             });
 
-            // FALTA TESTAR
-
             // remove ação
             $(document).on('click', '.btn_acao_excludente', function (e) {
 
@@ -1945,6 +2041,380 @@
             });
 
 
+            //-----------------------------//
+
+            // -------- RESULTADOS --------//
+
+
+            // carrega os dados de itens de apreensão
+            $(document).on('click', '#pills-result-tab', function (e) {
+
+                e.preventDefault();
+
+                $('#lista_cat_apreensoes').empty();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/listacatapre',
+
+                    beforeSend: function () {
+
+                        $('#lista_cat_apreensoes').LoadingOverlay("show");
+
+                    },
+                    success: function (data) {
+
+                        console.log(data);
+
+                        for (let i = 0; i < data.length; i++) {
+
+                            let ajusta_itens = '';
+
+                            if (data[i].itens.length > 0) {
+
+                                ajusta_itens = '<ul>';
+
+                                for (let x = 0; x < data[i].itens.length; x++) {
+
+                                    ajusta_itens += `<li>${data[i].itens[x].nome} ( ${data[i].itens[x].forma_medir} ) <span class="bola" style="background-color: ${data[i].itens[x].cor};"></span></li>`;
+
+                                }
+
+                                ajusta_itens += '</ul>';
+
+                            }
+
+                            let crialista = `<div class="col-6"><div class="alert alert-meu"> ${data[i].nome} <span class="corbox-normal bordas"
+                                              style="background-color: ${data[i].cor};"></span> <br><br> ${ajusta_itens}</div></div>`;
+
+
+                            $('#lista_cat_apreensoes').append(crialista);
+
+                        }
+
+                        $('#lista_cat_apreensoes').LoadingOverlay("hide");
+
+                    },
+                    error: function (data) {
+
+                        console.log(data);
+
+                        // alert de erro
+                        toastr.error('Não foi possível obter as informações!', 'Falha!');
+
+                    },
+
+
+                });
+
+
+            });
+
+            var pegaitensliiniapreensao = [];
+            var pegacatapreensaoini = [];
+
+            // abre o modal de alterar categorias e itens de aprteensão
+            $(document).on('click', '#button_altera_cat_itens_apreensao', function (e) {
+
+                e.preventDefault();
+
+                $('#lista_cat_apreensoes_edita').empty();
+
+                pegaitensliiniapreensao = [];
+                pegacatapreensaoini = [];
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/listacatapre',
+
+                    success: function (data) {
+
+                        console.log(data);
+
+                        for (let i = 0; i < data.length; i++) {
+
+                            let ajusta_itens = '';
+
+                            if (data[i].itens.length > 0) {
+
+                                ajusta_itens = `<ul id="listalicatitens_${data[i].id}">`;
+
+                                for (let x = 0; x < data[i].itens.length; x++) {
+
+                                    ajusta_itens += `<li id="leitemedit_${data[i].itens[x].id}">${data[i].itens[x].nome} ( ${data[i].itens[x].forma_medir} ) <span class="bola" style="background-color: ${data[i].itens[x].cor};"></span></li>`;
+
+                                }
+
+                                ajusta_itens += '</ul>';
+
+                            }
+
+                            let crialista = `<div class="col-12" id="categora_item_espaco_edit_${data[i].id}">` +
+                                `<div class="alert alert-meu">` +
+                                `<div class="row">` +
+                                `<div class="col-11"> ${data[i].nome} ` +
+                                `<span class="corbox-normal bordas" style="background-color: ${data[i].cor};"></span>` +
+                                `</div>` +
+                                `<div class="col-1 text-right">` +
+                                `<a href="#" class="link-simples button_edit_cat" id="editcat_${data[i].id}"><i class="fa fa-edit"></i></a>` +
+                                `<span class="separaicon"></span> ` +
+                                `<a href="#" class="link-simples button_delete_cat" id="excludecat_${data[i].id}"> <i class="fa fa-trash"></i></a>` +
+                                `<a href="#" class="link-simples button_cancel_cat d-none" id="cancelcat_${data[i].id}"> <i class="fa fa-ban"></i></a>` +
+                                `</div>` +
+                                `</div>` +
+                                `<br><br> ${ajusta_itens}</div></div>`;
+
+
+                            $('#lista_cat_apreensoes_edita').append(crialista);
+
+                        }
+
+
+                        $('#modal_altera_cat_itens_apreensao').modal('show');
+
+                    },
+                    error: function (data) {
+
+                        console.log(data);
+
+                        // alert de erro
+                        toastr.error('Não foi possível obter as informações!', 'Falha!');
+
+                    },
+
+
+                });
+
+
+            });
+
+            //remove uma categoria de itens apreendidos
+            $(document).on('click', '.button_delete_cat', function (e) {
+
+                e.preventDefault();
+                let id = $(this).attr('id').split('_')[1];
+
+                $.confirm({
+                    title: 'Você esta certo disso?',
+                    content: 'A ação de excluir uma categoria é altamente prejudicial ao sistema! Tenha certeza absoluta do que está fazendo, pois isso vai gerar um enorme impacto em todas as missões e relatórios existentes. (todos os itens dessa categoria também serão removidos',
+                    buttons: {
+                        Confirmar: {
+                            action: function () {
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/catapreensao/' + id,
+
+                                    data: {
+                                        _method: 'DELETE',
+                                    },
+                                    success: function () {
+
+
+                                        $('#categora_item_espaco_edit_' + id).remove();
+
+                                        // alerta de sucesso
+                                        toastr.success('A categoria foi removida com sucesso.', 'Sucesso!');
+
+                                    },
+                                    error: function () {
+
+                                        // alert de erro
+                                        toastr.error('Não foi possível excluir a categoria!', 'Falha!');
+
+                                    }
+
+                                });
+                            },
+                            btnClass: 'btn-outline-dark'
+                        },
+                        Cancelar: {
+                            btnClass: 'btn-outline-danger'
+                        },
+                    },
+                    columnClass: 'col-md-6'
+                });
+
+            });
+
+
+            // ajusta a edição de categoria e itens
+            $(document).on('click', '.button_edit_cat', function (e) {
+
+                e.preventDefault();
+
+                let id = $(this).attr('id').split('_')[1];
+
+                $('.button_edit_cat').each(function () {
+
+                    $(this).addClass('d-none');
+
+                });
+
+                $('.button_delete_cat').each(function () {
+
+                    $(this).addClass('d-none');
+
+                });
+
+                $('.button_cancel_cat').each(function () {
+
+                    $(this).addClass('d-none');
+
+                });
+
+                $('[id ^= "categora_item_espaco_edit_"]').each(function () {
+
+                    if ($(this).attr('id') != 'categora_item_espaco_edit_' + id) {
+
+                        $(this).children().eq(0).removeClass('alert-meu').addClass('alert-inative');
+
+                    }
+
+                });
+
+
+                $('#listalicatitens_' + id + ' li').each(function () {
+
+                    pegaitensliiniapreensao.push([$(this).attr('id').split('_')[1], $(this).text().split(' ( ')[0], $(this).text().split(' ( ')[1].split(' ) ')[0], rgb2hex($(this).children().eq(0).css('background-color'))]);
+
+                });
+
+
+                const qualcat_id = id;
+                const qualcat_ini = $('#categora_item_espaco_edit_' + id).children().eq(0).children().eq(0).children().eq(0).text();
+                const qualcatcor_ini = rgb2hex($('#categora_item_espaco_edit_' + id).children().eq(0).children().eq(0).children().eq(0).children().eq(0).css('background-color'));
+
+
+                pegacatapreensaoini.push(qualcat_id, qualcat_ini, qualcatcor_ini);
+
+                console.log(pegacatapreensaoini);
+
+
+                console.log(pegaitensliiniapreensao);
+
+
+                $('#listalicatitens_' + id).empty().replaceWith(`<div id="new_inputs_space_cat_${id}"></div>`);
+
+                $('#cancelcat_' + id).removeClass('d-none');
+
+                if (pegaitensliiniapreensao.length > 0) {
+
+                    for (let i = 0; i < pegaitensliiniapreensao.length; i++) {
+
+                        let leselectedforma = '';
+
+                        $('#new_inputs_space_cat_' + id).append('<div class="alert alert-secondary"><div class="row">' +
+                            '<div class="col-7">' +
+                            '<label for="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Nome do Item </label> <input class="form-control" type="text" value="' + pegaitensliiniapreensao[i][1] + '" id="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
+                            '</div>' +
+                            '<div class="col-2">' +
+                            '<label for="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Forma de Medir </label> <select class="form-control"  id="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '"><option>Unidades</option><option>Kg</option><option>Ton</option><option>L</option><option>M²</option><option>M³</option></select>' +
+                            '</div>' +
+                            '<div class="col-2">' +
+                            '<label for="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Cor </label> <input class="form-control" type="color" value="' + pegaitensliiniapreensao[i][3] + '" id="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
+                            '</div>' +
+                            '<div class="col-1 text-center">' +
+                            '<label>Opções</label>' +
+                            '<a href="#" class="form-control link-simples le_wild_delete_item_cat" id="removeitemcateditscreen_' + pegaitensliiniapreensao[i][0] + '"><i class="fa fa-trash"></i></a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+
+
+                        $('#forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + ' option').each(function () {
+
+                            if ($(this).val() == pegaitensliiniapreensao[i][2]) {
+
+                                $(this).prop('selected', true);
+
+                            }
+
+                        });
+
+
+                    }
+
+
+                }
+
+                let ajusttainpuuuut = '' +
+                    '<div class="col">' +
+                    '<div class="alert alert-primary">' +
+                    '<div class="row">' +
+                    '<div class="col-10">' +
+                    '<label for="catname_edit_' + pegacatapreensaoini[0] + '">Nome da Categoria</label> <input class="form-control" type="text" value="' + pegacatapreensaoini[1] + '" id="catname_edit_' + pegacatapreensaoini[0] + '">' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<label for="catcor_edit_' + pegacatapreensaoini[0] + '">Cor </label> <input class="form-control" type="color" value="' + pegacatapreensaoini[2] + '" id="catcor_edit_' + pegacatapreensaoini[0] + '">' +
+                    '</div>' +
+
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+
+                $('#categora_item_espaco_edit_' + pegacatapreensaoini[0]).children().eq(0).children().eq(0).children().eq(0).replaceWith(ajusttainpuuuut);
+
+
+            });
+
+            // cancela as edições
+            $(document).on('click', '.button_cancel_cat', function (e) {
+
+                e.preventDefault();
+
+                let id = $(this).attr('id').split('_')[1];
+
+                console.log(pegaitensliiniapreensao);
+                console.log(pegacatapreensaoini);
+
+
+                $('.button_edit_cat').each(function () {
+
+                    $(this).removeClass('d-none');
+
+                });
+
+                $('.button_delete_cat').each(function () {
+
+                    $(this).removeClass('d-none');
+
+                });
+
+                $('.button_cancel_cat').each(function () {
+
+                    $(this).addClass('d-none');
+
+                });
+
+                $('[id ^= "categora_item_espaco_edit_"]').each(function () {
+
+
+                    $(this).children().eq(0).removeClass('alert-inative').addClass('alert-meu');
+
+
+                });
+
+                $('#new_inputs_space_cat_' + id).empty().replaceWith('<ul id="listalicatitens_' + pegacatapreensaoini[0] + '"></ul>');
+
+                for (let i = 0; i < pegaitensliiniapreensao.length; i++) {
+
+                    $('#listalicatitens_' + pegacatapreensaoini[0]).append('<li id="leitemedit_' + pegaitensliiniapreensao[i][0] + '">' + pegaitensliiniapreensao[i][1] + ' ( ' + pegaitensliiniapreensao[i][2] + ' ) <span class="bola" style="background-color: ' + pegaitensliiniapreensao[i][3] + ';"></span></li>');
+
+                }
+
+
+                pegaitensliiniapreensao = [];
+                pegacatapreensaoini = [];
+
+
+            });
 
 
         });

@@ -71,4 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
     // controles de sub divisões de ações
     Route::resource('sdacaomanager', 'AcaoSubDivisaoController');
 
+    // controles de categorias de apreensoes (resultados)
+    Route::resource('/catapreensao', 'Resultados\Apreensoes\ApreensaoCategoriaController');
+    Route::get('/listacatapre', 'Resultados\Apreensoes\ApreensaoCategoriaController@listaTodos');
+
 });

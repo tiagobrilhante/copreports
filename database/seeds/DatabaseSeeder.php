@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             MissaoEmpregoSubItemSeeder::Class,
             AcaoSeeder::Class,
             AcaoSubDivisaoSeeder::Class,
+            ApreensaoCategoriaSeeder::Class,
+            ApreensaoItensSeeder::Class,
         ]);
     }
 }
