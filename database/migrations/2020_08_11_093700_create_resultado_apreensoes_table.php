@@ -20,6 +20,7 @@ class CreateResultadoApreensoesTable extends Migration
             $table->date('data_apreensao');
             $table->string('quem_apreendeu');
             $table->longText('observacao');
+            $table->longText('motivo');
             $table->string('cor');
 
             $table->unsignedBigInteger('item_categoria_id')->index();

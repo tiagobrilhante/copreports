@@ -25,6 +25,7 @@ class ResultadoApreensao extends Model
         'data_apreensao',
         'quem_apreendeu',
         'observacao',
+        'motivo',
         'cor'
 
     ];

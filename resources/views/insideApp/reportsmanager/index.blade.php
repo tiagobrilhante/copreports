@@ -3,7 +3,7 @@
 @section('content')
 
     {{--card--}}
-    <div class="card">
+    <div class="card" id="mycard">
 
         {{--card header--}}
         <div class="card-header">
@@ -212,7 +212,7 @@
 
                         </h5>
 
-                        <div class="alert alert-dark">
+                        <div class="alert alert-dark" id="apreensao_sapce_alert">
 
                             <div class="row">
 
@@ -231,7 +231,6 @@
                                 </div>
 
                             </div>
-
                             Categorias de itens possíveis e itens:
 
                             {{--espaçpo para listar--}}
@@ -247,9 +246,11 @@
                                     <li> Quantidade apreendida (com base na forma de medir do item)</li>
                                     <li> Data da Apreensão</li>
                                     <li> Om / Su que apreendeu</li>
+                                    <li> Motivo da Apreensão</li>
                                     <li> Observações (SFC)</li>
                                     <li> Cor (Impacta apenas na geração de gráficos)</li>
                                 </ul>
+
                             </div>
 
                         </div>
@@ -843,7 +844,7 @@
 
                     {{--modal footer--}}
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Alterar</button>
+                        <button id="mysubmitbutton_cat_itens" type="submit" class="btn btn-success d-none">Alterar</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 
                     </div>
@@ -864,6 +865,9 @@
 
 
     <script>
+
+        $('#mycard').LoadingOverlay("show");
+
         $(function () {
 
             //start tippy on load
@@ -1465,7 +1469,7 @@
 
             //---------------Ações------------//
 
-            // abre o modal de cadastro de novas missões de emprego
+            // abre o modal de cadastro de novas acoes
             $(document).on('click', '#new_acao', function (e) {
 
                 e.preventDefault();
@@ -2059,7 +2063,7 @@
 
                     beforeSend: function () {
 
-                        $('#lista_cat_apreensoes').LoadingOverlay("show");
+                        $('#apreensao_sapce_alert').LoadingOverlay("show");
 
                     },
                     success: function (data) {
@@ -2092,7 +2096,7 @@
 
                         }
 
-                        $('#lista_cat_apreensoes').LoadingOverlay("hide");
+                        $('#apreensao_sapce_alert').LoadingOverlay("hide");
 
                     },
                     error: function (data) {
@@ -2119,6 +2123,7 @@
                 e.preventDefault();
 
                 $('#lista_cat_apreensoes_edita').empty();
+                $('#mysubmitbutton_cat_itens').addClass('d-none');
 
                 pegaitensliiniapreensao = [];
                 pegacatapreensaoini = [];
@@ -2251,6 +2256,8 @@
 
                 let id = $(this).attr('id').split('_')[1];
 
+                $('#mysubmitbutton_cat_itens').removeClass('d-none');
+
                 $('.button_edit_cat').each(function () {
 
                     $(this).addClass('d-none');
@@ -2273,7 +2280,7 @@
 
                     if ($(this).attr('id') != 'categora_item_espaco_edit_' + id) {
 
-                        $(this).children().eq(0).removeClass('alert-meu').addClass('alert-inative');
+                        $(this).children().eq(0).addClass('d-none');
 
                     }
 
@@ -2286,19 +2293,14 @@
 
                 });
 
-
                 const qualcat_id = id;
                 const qualcat_ini = $('#categora_item_espaco_edit_' + id).children().eq(0).children().eq(0).children().eq(0).text();
                 const qualcatcor_ini = rgb2hex($('#categora_item_espaco_edit_' + id).children().eq(0).children().eq(0).children().eq(0).children().eq(0).css('background-color'));
 
-
                 pegacatapreensaoini.push(qualcat_id, qualcat_ini, qualcatcor_ini);
 
                 console.log(pegacatapreensaoini);
-
-
                 console.log(pegaitensliiniapreensao);
-
 
                 $('#listalicatitens_' + id).empty().replaceWith(`<div id="new_inputs_space_cat_${id}"></div>`);
 
@@ -2312,13 +2314,13 @@
 
                         $('#new_inputs_space_cat_' + id).append('<div class="alert alert-secondary"><div class="row">' +
                             '<div class="col-7">' +
-                            '<label for="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Nome do Item </label> <input class="form-control" type="text" value="' + pegaitensliiniapreensao[i][1] + '" id="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
+                            '<label for="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Nome do Item </label> <input required class="form-control name_item_edit" type="text" value="' + pegaitensliiniapreensao[i][1] + '" id="name_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '"><input class="id_item_edit" type="hidden" value="' + pegaitensliiniapreensao[i][0] + '" id="id_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
                             '</div>' +
                             '<div class="col-2">' +
-                            '<label for="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Forma de Medir </label> <select class="form-control"  id="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '"><option>Unidades</option><option>Kg</option><option>Ton</option><option>L</option><option>M²</option><option>M³</option></select>' +
+                            '<label for="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Forma de Medir </label> <select required class="form-control forma_item_edit"  id="forma_medir_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '"><option>Unidades</option><option>Kg</option><option>Ton</option><option>L</option><option>M²</option><option>M³</option></select>' +
                             '</div>' +
                             '<div class="col-2">' +
-                            '<label for="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Cor </label> <input class="form-control" type="color" value="' + pegaitensliiniapreensao[i][3] + '" id="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
+                            '<label for="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">Cor </label> <input required class="form-control cor_item_edit" type="color" value="' + pegaitensliiniapreensao[i][3] + '" id="cor_item_cat_edit_' + pegaitensliiniapreensao[i][0] + '">' +
                             '</div>' +
                             '<div class="col-1 text-center">' +
                             '<label>Opções</label>' +
@@ -2338,25 +2340,22 @@
 
                         });
 
-
                     }
-
 
                 }
 
                 let ajusttainpuuuut = '' +
                     '<div class="col">' +
-                    '<div class="alert alert-primary">' +
-                    '<div class="row">' +
-                    '<div class="col-10">' +
-                    '<label for="catname_edit_' + pegacatapreensaoini[0] + '">Nome da Categoria</label> <input class="form-control" type="text" value="' + pegacatapreensaoini[1] + '" id="catname_edit_' + pegacatapreensaoini[0] + '">' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                    '<label for="catcor_edit_' + pegacatapreensaoini[0] + '">Cor </label> <input class="form-control" type="color" value="' + pegacatapreensaoini[2] + '" id="catcor_edit_' + pegacatapreensaoini[0] + '">' +
-                    '</div>' +
-
-                    '</div>' +
-                    '</div>' +
+                        '<div class="alert alert-primary">' +
+                            '<div class="row">' +
+                                '<div class="col-10">' +
+                                    '<label for="catname_edit_' + pegacatapreensaoini[0] + '">Nome da Categoria</label> <input required class="form-control" type="text" value="' + pegacatapreensaoini[1] + '" id="catname_edit_' + pegacatapreensaoini[0] + '"><input type="hidden" value="' + pegacatapreensaoini[0] + '" id="wild_cat_id">' +
+                                '</div>' +
+                                '<div class="col-2">' +
+                                    '<label for="catcor_edit_' + pegacatapreensaoini[0] + '">Cor </label> <input required class="form-control" type="color" value="' + pegacatapreensaoini[2] + '" id="catcor_edit_' + pegacatapreensaoini[0] + '">' +
+                                '</div>' +
+                            '</div>' +
+                        '</div><button data-id="'+pegacatapreensaoini[0]+'" class="btn btn-outline-dark" id="add_new_item_cat_edit_button"><i class="fa fa-plus-circle"></i> Adicionar novos itens</button>' +
                     '</div>'
 
                 $('#categora_item_espaco_edit_' + pegacatapreensaoini[0]).children().eq(0).children().eq(0).children().eq(0).replaceWith(ajusttainpuuuut);
@@ -2396,10 +2395,13 @@
                 $('[id ^= "categora_item_espaco_edit_"]').each(function () {
 
 
-                    $(this).children().eq(0).removeClass('alert-inative').addClass('alert-meu');
+                    $(this).children().eq(0).removeClass('d-none');
 
 
                 });
+
+
+                $('#categora_item_espaco_edit_'+id +' .alert-meu .row').children().eq(0).empty().removeClass('col-10').removeClass('col').addClass('col-11').append(pegacatapreensaoini[1] + '<span class="corbox-normal bordas" style="background-color: '+pegacatapreensaoini[2]+';"></span>');
 
                 $('#new_inputs_space_cat_' + id).empty().replaceWith('<ul id="listalicatitens_' + pegacatapreensaoini[0] + '"></ul>');
 
@@ -2416,7 +2418,180 @@
 
             });
 
+            // submete alterações de itens
+            $(document).on('submit','#form_alterar_cat_item_apreensao',function (e) {
 
+                e.preventDefault();
+
+                console.log('vou mandar');
+
+                const lewildid = $('#wild_cat_id').val();
+                const lecatnewname = $('#catname_edit_'+lewildid).val();
+                const lecatnewcolor = $('#catcor_edit_'+lewildid).val();
+
+                console.log(lewildid);
+                console.log(lecatnewname);
+                console.log(lecatnewcolor);
+
+                let array_itens_antigos = [null];
+                let array_itens_novos = [null];
+
+                // se tem itens antigos
+                if ($('.id_item_edit').length > 0) {
+
+                    array_itens_antigos = [];
+
+                    $('.id_item_edit').each(function () {
+
+                        array_itens_antigos.push([
+                            $(this).val(),
+                            $('#name_item_cat_edit_' + $(this).val()).val(),
+                            $('#forma_medir_item_cat_edit_' + $(this).val()).val(),
+                            $('#cor_item_cat_edit_' + $(this).val()).val()
+                        ]);
+
+                    });
+                }
+
+                // se tem itens novos
+
+                if($('.new_name_item_edit').length > 0){
+
+                    array_itens_novos =[];
+
+                    $('.new_name_item_edit').each(function () {
+
+                        let mynewloop = $(this).attr('id').split('name_new_item_cat_edit_')[1];
+
+                        console.log('mynewloop');
+                        console.log(mynewloop);
+
+                        array_itens_novos.push([
+                            $('#name_new_item_cat_edit_' + mynewloop).val(),
+                            $('#new_forma_medir_item_cat_edit_' + mynewloop).val(),
+                            $('#new_cor_item_cat_edit_' + mynewloop).val()
+                        ]);
+                    });
+
+                }
+
+
+
+                console.log(array_itens_antigos);
+                console.log(array_itens_novos);
+
+                //const lenewname =
+
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/catapreensao/' + lewildid,
+                    data: {
+                        _method: 'PUT',
+                        _token: $('meta[name=csrf-token]').attr('content'),
+                        nome: lecatnewname,
+                        cor: lecatnewcolor,
+                        novos_itens: array_itens_novos,
+                        old_itens: array_itens_antigos,
+
+                    },
+
+                    success: function (data) {
+
+                        console.log(data);
+
+
+
+                        toastr.success('Categoria / itens alterados com sucesso!', 'Sucesso!');
+
+                        // hide modal
+                      //  $('#altera_acao').modal('hide');
+
+                    },
+                    error: function (data) {
+
+                        toastr.error('Não foi possível alterar a Categoria e/ou seus itens!', 'Falha!');
+
+                    }
+
+                });
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+        });
+
+        // gera cor aleatória em js
+        function aleatoryColor() {
+
+            var rand = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
+            var color = '#' + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)];
+
+            return color;
+
+        }
+
+
+        var conta_novo_espaco_item_cat = 0;
+
+        $(document).on('click','#add_new_item_cat_edit_button', function (e) {
+
+            e.preventDefault();
+
+            console.log('click');
+
+            const idcatget = $(this).data('id');
+
+            console.log(idcatget);
+
+            const lenewsapceforitens = '<div class="alert alert-secondary" id="new_new_space_'+conta_novo_espaco_item_cat+'"><div class="row">' +
+                '<div class="col-7">' +
+                '<label for="name_new_item_cat_edit_' + conta_novo_espaco_item_cat + '">Nome do Item (Novo Item)</label> <input required class="form-control new_name_item_edit" type="text" id="name_new_item_cat_edit_' + conta_novo_espaco_item_cat + '">' +
+                '</div>' +
+                '<div class="col-2">' +
+                '<label for="new_forma_medir_item_cat_edit_' + conta_novo_espaco_item_cat + '">Forma de Medir </label> <select required class="form-control new_forma_item_edit"  id="new_forma_medir_item_cat_edit_' + conta_novo_espaco_item_cat + '"><option>Unidades</option><option>Kg</option><option>Ton</option><option>L</option><option>M²</option><option>M³</option></select>' +
+                '</div>' +
+                '<div class="col-2">' +
+                '<label for="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">Cor </label> <input required class="form-control new_cor_item_edit" type="color" value="'+aleatoryColor()+'" id="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">' +
+                '</div>' +
+                '<div class="col-1 text-center">' +
+                '<label>Opções</label>' +
+                '<a href="#" class="form-control link-simples le_new_wild_delete_item_cat" id="newremoveitemcateditscreen_' + conta_novo_espaco_item_cat + '"><i class="fa fa-trash"></i></a>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            $('#new_inputs_space_cat_'+idcatget).prepend(lenewsapceforitens);
+
+            conta_novo_espaco_item_cat ++;
+
+        });
+
+        // remove um itemnovo na tela de edicão (não persistido)
+        $(document).on('click','.le_new_wild_delete_item_cat',function (e) {
+
+            e.preventDefault();
+
+            const id = $(this).attr('id').split('_')[1];
+
+            $('#new_new_space_'+id).remove();
+
+        });
+
+
+        $(window).on('load', function() {
+            $('#mycard').LoadingOverlay("hide");
         });
     </script>
 
