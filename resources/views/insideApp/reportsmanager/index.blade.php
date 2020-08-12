@@ -844,8 +844,9 @@
 
                     {{--modal footer--}}
                     <div class="modal-footer">
-                        <button id="mysubmitbutton_cat_itens" type="submit" class="btn btn-success d-none">Alterar</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button id="mysubmitbutton_cat_itens" type="submit" class="btn btn-success d-none">Alterar
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Sair</button>
 
                     </div>
 
@@ -2346,16 +2347,16 @@
 
                 let ajusttainpuuuut = '' +
                     '<div class="col">' +
-                        '<div class="alert alert-primary">' +
-                            '<div class="row">' +
-                                '<div class="col-10">' +
-                                    '<label for="catname_edit_' + pegacatapreensaoini[0] + '">Nome da Categoria</label> <input required class="form-control" type="text" value="' + pegacatapreensaoini[1] + '" id="catname_edit_' + pegacatapreensaoini[0] + '"><input type="hidden" value="' + pegacatapreensaoini[0] + '" id="wild_cat_id">' +
-                                '</div>' +
-                                '<div class="col-2">' +
-                                    '<label for="catcor_edit_' + pegacatapreensaoini[0] + '">Cor </label> <input required class="form-control" type="color" value="' + pegacatapreensaoini[2] + '" id="catcor_edit_' + pegacatapreensaoini[0] + '">' +
-                                '</div>' +
-                            '</div>' +
-                        '</div><button data-id="'+pegacatapreensaoini[0]+'" class="btn btn-outline-dark" id="add_new_item_cat_edit_button"><i class="fa fa-plus-circle"></i> Adicionar novos itens</button>' +
+                    '<div class="alert alert-primary">' +
+                    '<div class="row">' +
+                    '<div class="col-10">' +
+                    '<label for="catname_edit_' + pegacatapreensaoini[0] + '">Nome da Categoria</label> <input required class="form-control" type="text" value="' + pegacatapreensaoini[1] + '" id="catname_edit_' + pegacatapreensaoini[0] + '"><input type="hidden" value="' + pegacatapreensaoini[0] + '" id="wild_cat_id">' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<label for="catcor_edit_' + pegacatapreensaoini[0] + '">Cor </label> <input required class="form-control" type="color" value="' + pegacatapreensaoini[2] + '" id="catcor_edit_' + pegacatapreensaoini[0] + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div><button data-id="' + pegacatapreensaoini[0] + '" class="btn btn-outline-dark" id="add_new_item_cat_edit_button"><i class="fa fa-plus-circle"></i> Adicionar novos itens</button>' +
                     '</div>'
 
                 $('#categora_item_espaco_edit_' + pegacatapreensaoini[0]).children().eq(0).children().eq(0).children().eq(0).replaceWith(ajusttainpuuuut);
@@ -2369,9 +2370,6 @@
                 e.preventDefault();
 
                 let id = $(this).attr('id').split('_')[1];
-
-                console.log(pegaitensliiniapreensao);
-                console.log(pegacatapreensaoini);
 
 
                 $('.button_edit_cat').each(function () {
@@ -2401,7 +2399,7 @@
                 });
 
 
-                $('#categora_item_espaco_edit_'+id +' .alert-meu .row').children().eq(0).empty().removeClass('col-10').removeClass('col').addClass('col-11').append(pegacatapreensaoini[1] + '<span class="corbox-normal bordas" style="background-color: '+pegacatapreensaoini[2]+';"></span>');
+                $('#categora_item_espaco_edit_' + id + ' .alert-meu .row').children().eq(0).empty().removeClass('col-10').removeClass('col').addClass('col-11').append(pegacatapreensaoini[1] + '<span class="corbox-normal bordas" style="background-color: ' + pegacatapreensaoini[2] + ';"></span>');
 
                 $('#new_inputs_space_cat_' + id).empty().replaceWith('<ul id="listalicatitens_' + pegacatapreensaoini[0] + '"></ul>');
 
@@ -2419,19 +2417,13 @@
             });
 
             // submete alterações de itens
-            $(document).on('submit','#form_alterar_cat_item_apreensao',function (e) {
+            $(document).on('submit', '#form_alterar_cat_item_apreensao', function (e) {
 
                 e.preventDefault();
 
-                console.log('vou mandar');
-
                 const lewildid = $('#wild_cat_id').val();
-                const lecatnewname = $('#catname_edit_'+lewildid).val();
-                const lecatnewcolor = $('#catcor_edit_'+lewildid).val();
-
-                console.log(lewildid);
-                console.log(lecatnewname);
-                console.log(lecatnewcolor);
+                const lecatnewname = $('#catname_edit_' + lewildid).val();
+                const lecatnewcolor = $('#catcor_edit_' + lewildid).val();
 
                 let array_itens_antigos = [null];
                 let array_itens_novos = [null];
@@ -2455,9 +2447,9 @@
 
                 // se tem itens novos
 
-                if($('.new_name_item_edit').length > 0){
+                if ($('.new_name_item_edit').length > 0) {
 
-                    array_itens_novos =[];
+                    array_itens_novos = [];
 
                     $('.new_name_item_edit').each(function () {
 
@@ -2475,16 +2467,6 @@
 
                 }
 
-
-
-                console.log(array_itens_antigos);
-                console.log(array_itens_novos);
-
-                //const lenewname =
-
-
-
-
                 $.ajax({
                     type: 'POST',
                     url: '/catapreensao/' + lewildid,
@@ -2500,14 +2482,58 @@
 
                     success: function (data) {
 
+                        console.log('data');
                         console.log(data);
 
 
+                        $('.button_edit_cat').each(function () {
+
+                            $(this).removeClass('d-none');
+
+                        });
+
+                        $('.button_delete_cat').each(function () {
+
+                            $(this).removeClass('d-none');
+
+                        });
+
+                        $('.button_cancel_cat').each(function () {
+
+                            $(this).addClass('d-none');
+
+                        });
+
+                        $('[id ^= "categora_item_espaco_edit_"]').each(function () {
+
+
+                            $(this).children().eq(0).removeClass('d-none');
+
+
+                        });
+
+
+                        $('#categora_item_espaco_edit_' + data.id + ' .alert-meu .row').children().eq(0).empty().removeClass('col-10').removeClass('col').addClass('col-11').append(data.nome + '<span class="corbox-normal bordas" style="background-color: ' + data.cor + ';"></span>');
+
+                        $('#new_inputs_space_cat_' + data.id).empty().replaceWith('<ul id="listalicatitens_' + data.id + '"></ul>');
+
+                        for (let i = 0; i < data.itens.length; i++) {
+
+                            $('#listalicatitens_' + data.id).append('<li id="leitemedit_' + data.itens[i].id + '">' + data.itens[i].nome + ' ( ' + data.itens[i].forma_medir + ' ) <span class="bola" style="background-color: ' + data.itens[i].cor + ';"></span></li>');
+
+                        }
+
+
+                        pegaitensliiniapreensao = [];
+                        pegacatapreensaoini = [];
+
+
+                        $('#mysubmitbutton_cat_itens').addClass('d-none');
 
                         toastr.success('Categoria / itens alterados com sucesso!', 'Sucesso!');
 
                         // hide modal
-                      //  $('#altera_acao').modal('hide');
+                        //  $('#altera_acao').modal('hide');
 
                     },
                     error: function (data) {
@@ -2519,15 +2545,7 @@
                 });
 
 
-
-
-
-
             });
-
-
-
-
 
 
         });
@@ -2535,7 +2553,7 @@
         // gera cor aleatória em js
         function aleatoryColor() {
 
-            var rand = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
+            var rand = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
             var color = '#' + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)] + rand[Math.ceil(Math.random() * 15)];
 
             return color;
@@ -2545,17 +2563,13 @@
 
         var conta_novo_espaco_item_cat = 0;
 
-        $(document).on('click','#add_new_item_cat_edit_button', function (e) {
+        $(document).on('click', '#add_new_item_cat_edit_button', function (e) {
 
             e.preventDefault();
 
-            console.log('click');
-
             const idcatget = $(this).data('id');
 
-            console.log(idcatget);
-
-            const lenewsapceforitens = '<div class="alert alert-secondary" id="new_new_space_'+conta_novo_espaco_item_cat+'"><div class="row">' +
+            const lenewsapceforitens = '<div class="alert alert-secondary" id="new_new_space_' + conta_novo_espaco_item_cat + '"><div class="row">' +
                 '<div class="col-7">' +
                 '<label for="name_new_item_cat_edit_' + conta_novo_espaco_item_cat + '">Nome do Item (Novo Item)</label> <input required class="form-control new_name_item_edit" type="text" id="name_new_item_cat_edit_' + conta_novo_espaco_item_cat + '">' +
                 '</div>' +
@@ -2563,7 +2577,7 @@
                 '<label for="new_forma_medir_item_cat_edit_' + conta_novo_espaco_item_cat + '">Forma de Medir </label> <select required class="form-control new_forma_item_edit"  id="new_forma_medir_item_cat_edit_' + conta_novo_espaco_item_cat + '"><option>Unidades</option><option>Kg</option><option>Ton</option><option>L</option><option>M²</option><option>M³</option></select>' +
                 '</div>' +
                 '<div class="col-2">' +
-                '<label for="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">Cor </label> <input required class="form-control new_cor_item_edit" type="color" value="'+aleatoryColor()+'" id="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">' +
+                '<label for="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">Cor </label> <input required class="form-control new_cor_item_edit" type="color" value="' + aleatoryColor() + '" id="new_cor_item_cat_edit_' + conta_novo_espaco_item_cat + '">' +
                 '</div>' +
                 '<div class="col-1 text-center">' +
                 '<label>Opções</label>' +
@@ -2572,25 +2586,25 @@
                 '</div>' +
                 '</div>';
 
-            $('#new_inputs_space_cat_'+idcatget).prepend(lenewsapceforitens);
+            $('#new_inputs_space_cat_' + idcatget).prepend(lenewsapceforitens);
 
-            conta_novo_espaco_item_cat ++;
+            conta_novo_espaco_item_cat++;
 
         });
 
         // remove um itemnovo na tela de edicão (não persistido)
-        $(document).on('click','.le_new_wild_delete_item_cat',function (e) {
+        $(document).on('click', '.le_new_wild_delete_item_cat', function (e) {
 
             e.preventDefault();
 
             const id = $(this).attr('id').split('_')[1];
 
-            $('#new_new_space_'+id).remove();
+            $('#new_new_space_' + id).remove();
 
         });
 
 
-        $(window).on('load', function() {
+        $(window).on('load', function () {
             $('#mycard').LoadingOverlay("hide");
         });
     </script>
